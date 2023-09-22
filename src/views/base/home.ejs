@@ -1,0 +1,23 @@
+<%- include('../partials/header/base') %>
+
+<div class="home-container">
+    <div class="home-container__title">
+        <h1>Recent music</h1>
+        <p class="flex flex--a-center">
+            <svg class="image--icon">
+                <use href="#clock"></use>
+            </svg>
+            <span>Newly added songs</span>
+        </p>
+    </div>
+    <div class="home-container__recent-songs" id="song-list">
+        
+    </div>
+</div> 
+
+<script src="/assets/js/dist/jquery.js"></script>
+<script src="/assets/js/dist/app.bundle.js"></script>
+
+<script>
+    Song.loadHomeSongs()
+</script>

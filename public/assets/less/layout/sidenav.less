@@ -1,0 +1,38 @@
+.sidenav{
+    position: fixed;
+    top: 0;
+    width: 30rem;
+    flex-direction: column;
+    height: 100%;
+    background-color: #fcfcfc;
+    // box-shadow: 0 0 4px #e7e7e7;
+    padding: 1rem .4rem;
+    z-index: 1;
+
+    &__nav{
+        margin-top: 8rem;
+
+        &__ul{
+            &__title{
+                padding: .4rem 4rem;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                font-size: 1.1rem;
+                color: #8d8d8d;
+            }
+
+            &__item{
+                padding: .4rem 4rem;
+
+                &:not(:last-child){
+                    margin-bottom: .5rem;
+                }
+
+                svg{
+                    margin-right: 1rem;
+                    fill: #5c5c5c;
+                }
+            }
+        }
+    }
+}

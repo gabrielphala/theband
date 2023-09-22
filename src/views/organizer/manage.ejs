@@ -1,0 +1,50 @@
+<%- include('../partials/header/organizer') %>
+
+<div class="container">
+    <%- include('../partials/sidenav/organizer') %>
+
+    <div class="container__main">
+        <div class="container__main__title">
+            <h1 class="flex flex--a-center">
+                <svg style="width: 3rem; height: 3rem;">
+                    <use href="#calendar"></use>
+                </svg>
+                <span>My events</span>
+            </h1>
+            <p>Manage your events from here</p>
+        </div>
+        <div class="container__main__center">
+            <p style="margin-bottom: 1rem;"><a href="/organizer/events">Back to all events</a></p>
+            <div class="card">
+                <div class="card__header card__header--no-border">
+                    <h1 style="font-size: 1.6rem;">Invitations</h1>
+                    <p>Responses</p>
+                </div>
+                <div class="table__header">
+                    <ul class="table__header__row flex">
+                        <li class="table__header__row__item">Artist</li>
+                        <li class="table__header__row__item">Artist email</li>
+                        <li class="table__header__row__item">Status</li>
+                    </ul>
+                </div>
+                <div class="table__body" id="invitation-list">
+                    <ul class="table__body__row"></ul>
+                </div>
+                <div id="no-invitations"></div>
+            </div>
+            <!-- <p class="flex flex--a-center" style="margin-top: 3rem;">
+                <svg class="image--icon" style="margin-right: 1rem;">
+                    <use href="#add"></use>
+                </svg>
+                <span>Publish event</span>
+            </p> -->
+        </div>
+    </div>
+</div>
+
+<script src="/assets/js/dist/jquery.js"></script>
+<script src="/assets/js/dist/app.bundle.js"></script>
+
+<script>
+    Event.viewOne()
+</script>

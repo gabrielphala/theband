@@ -1,0 +1,184 @@
+<%- include('../partials/header/artist') %>
+
+<div class="container">
+    <%- include('../partials/sidenav/artist') %>
+
+    <div class="container__main">
+        <div class="container__main__title">
+            <h1 class="flex flex--a-center">
+                <svg style="width: 3rem; height: 3rem;">
+                    <use href="#vinyl"></use>
+                </svg>
+                <span>My discography</span>
+            </h1>
+            <p>Your life's work</p>
+        </div>
+        <div class="container__main__nav">
+            <ul class="flex">
+                <li><a href="/artist/discography">My Songs</a></li>
+                <li><a href="/artist/discography?tab=albums">My Albums</a></li>
+            </ul>
+        </div>
+        <div class="container__main__center">
+            <div class="container__main__center__covers" id="single-list"> </div>
+            <div class="container__main__center__covers" id="album-list" style="display: none;"></div>
+            <div class="card__body empty flex flex--a-center flex--j-center" id="no-songs" style="display: none;">
+                <img src="/assets/illustrations/happy-bird.svg" alt="No data">
+                <div class="empty_caption">
+                    <h1>No songs</h1>
+                    <p>The song you upload will appear here</p>
+                </div>
+            </div>
+            <div class="card__body empty flex flex--a-center flex--j-center" id="no-albums" style="display: none;">
+                <img src="/assets/illustrations/album.svg" alt="No data">
+                <div class="empty_caption">
+                    <h1>No albums</h1>
+                    <p>Albums will appear here once</p>
+                </div>
+            </div>
+            <div class="flex"  style="margin-top: 3rem;">
+                <p style="cursor: pointer;" class="flex flex--a-center" id="add-song-btn" onclick="openModal('new-song')" style="margin-right: 3rem;">
+                    <svg class="image--icon" style="margin-right: 1rem;">
+                        <use href="#add"></use>
+                    </svg>
+                    <span>Upload single</span>
+                </p>
+                <p style="cursor: pointer;" class="flex flex--a-center" onclick="openModal('new-album')" id="add-to-album-btn" style="display: none;">
+                    <svg class="image--icon" style="margin-right: 1rem;">
+                        <use href="#vinyl"></use>
+                    </svg>
+                    <span>Create album</span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal modal--closed flex--a-start flex--j-center" id="new-song-modal">
+    <form class="modal__main card" id="new-song-form">
+        <div class="card__header card__header--no-border flex flex--a-center flex--j-space-between">
+            <div>
+                <h1>New song.</h1>
+                <p>New release</p>
+            </div>
+            <svg class="image--icon" onclick="closeModal('new-song')">
+                <use href="#cross"></use>
+            </svg>
+        </div>
+        <div class="card__body flex">
+            <div>
+                <div class="image-upload-preview" style="margin-right: 2rem;">
+                    <div class="image--back image-upload-preview__back" id="cover-preview" style="background-image: url('/assets/uploads/covers/default.png');"></div>
+                    <p class="pos--abs pos--center" id="cover-progress">0.0% Complete</p>
+                </div>
+                <input type="file" id="song-cover" hidden>
+                <label for="song-cover" style="cursor: pointer; display: block; text-align: center; margin-top: 1rem;">Select cover image</label>
+            </div>
+            <div style="flex: 1;">
+                <input type="text" id="album-id" hidden>
+                <div class="input" style="margin-top: 2rem;">
+                    <input type="text" id="song-name" placeholder="Song name">
+                </div>
+                <div class="input flex" style="margin-top: 2rem;">
+                    <label for="song-file" style="cursor: pointer;">Select song file</label>
+                    <input type="file" id="song-file" hidden>
+                    <span style="margin: 0 2rem;">|</span>
+                    <p id="song-progress">0% Complete</p>
+                </div>
+            </div>
+        </div>
+        <div class="card__footer">
+            <button class="btn btn--primary">Upload song</button>
+            <button type="button" class="btn" onclick="closeModal('new-song')">Cancel</button>
+        </div>
+    </form>
+</div>
+
+<div class="modal modal--closed flex--a-start flex--j-center" id="new-album-modal">
+    <form class="modal__main card" id="new-album-form">
+        <div class="card__header card__header--no-border flex flex--a-center flex--j-space-between">
+            <div>
+                <h1>New album.</h1>
+                <p>Start an album</p>
+            </div>
+            <svg class="image--icon" onclick="closeModal('new-album')">
+                <use href="#cross"></use>
+            </svg>
+        </div>
+        <div class="card__body flex">
+            <div>
+                <div class="image-upload-preview" style="margin-right: 2rem;">
+                    <div class="image--back image-upload-preview__back" id="album-cover-preview" style="background-image: url('/assets/uploads/covers/default.png');"></div>
+                    <p class="pos--abs pos--center" id="album-cover-progress">0.0% Complete</p>
+                </div>
+                <input type="file" id="album-cover" hidden>
+                <label for="album-cover" style="cursor: pointer; display: block; text-align: center; margin-top: 1rem;">Select cover image</label>
+            </div>
+            <div style="flex: 1;">
+                <div class="input" style="margin-top: 2rem;">
+                    <input type="text" id="album-name" placeholder="Album name">
+                </div>
+            </div>
+        </div>
+        <div class="card__footer">
+            <button class="btn btn--primary">Create album</button>
+            <button type="button" class="btn" onclick="closeModal('new-album')">Cancel</button>
+        </div>
+    </form>
+</div>
+
+<script src="/assets/js/dist/jquery.js"></script>
+<script src="/assets/js/dist/app.bundle.js"></script>
+
+<script>
+    $('#song-cover').on('change', async e => {
+        await Song.addSongCover()
+    })
+
+    $('#song-file').on('change', async e => {
+        await Song.addSongFile()
+    })
+
+    $('#new-song-form').on('submit', async e => {
+        e.preventDefault();
+
+        await Song.addSongName();
+    });
+
+    const showAlbums = () => {
+        window.isShowingAlbums = true;
+
+        $('#single-list').hide()
+        $('#album-list')[0].style.display = 'grid'
+
+        $('#add-song-btn').hide()
+        $('#add-to-album-btn')[0].style.display = 'flex'
+
+        Album.getReadyAlbumsByArtist()
+    }
+
+    const showSongs = () => {
+        window.isShowingAlbums = false;
+
+        $('#single-list')[0].style.display = 'grid'
+        $('#album-list').hide()
+
+        $('#add-to-album-btn').hide()
+        $('#add-song-btn')[0].style.display = 'flex'
+
+        Song.getReadySongsByArtist()
+    }
+
+    $('#new-album-form').on('submit', e => {
+        e.preventDefault();
+
+        Album.addAlbumName();
+    })
+
+    $('#album-cover').on('change', e => {
+        Album.addAlbumCover()
+    })
+
+    if (getQuery('tab') == 'albums') showAlbums()
+    else showSongs();
+</script>

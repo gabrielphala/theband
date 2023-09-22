@@ -1,0 +1,60 @@
+.table{
+    border-radius: 7px;
+    overflow: hidden;
+
+    &__header, &__body{
+        &__row{
+            display: flex;
+            min-height: 4rem;
+            align-items: center;
+            
+            &__item{
+                flex: 1;
+                padding: 0.5rem 0rem .5rem 1.4rem;
+
+                &:last-child{
+                    padding-right: 1.4rem;
+                    text-align: right;
+                }
+            }
+        }
+    }
+
+    &__header{
+        margin-bottom: .4rem;
+        border-bottom: 1px solid #eee;
+
+        &__row__item{
+            font-weight: bold;
+            color: #496189;
+        }
+    }
+
+    &__body{
+        &__row{
+            color: #7b7b7b;
+
+            &__item{
+                svg {
+                    fill: #b1b1b1;
+                }
+
+                &__edit {
+                    cursor: pointer;
+
+                    &:hover{
+                        fill: #377ced;
+                    }
+                }
+            
+                &__delete {
+                    cursor: pointer;
+
+                    &:hover{
+                        fill: darkred;
+                    }
+                }
+            }
+        }
+    }
+}

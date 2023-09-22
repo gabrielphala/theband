@@ -1,0 +1,111 @@
+<%- include('../partials/header/organizer') %>
+
+<div class="container">
+    <%- include('../partials/sidenav/organizer') %>
+
+    <div class="container__main">
+        <div class="container__main__title">
+            <h1 class="flex flex--a-center">
+                <svg style="width: 3rem; height: 3rem;">
+                    <use href="#calendar"></use>
+                </svg>
+                <span>My events</span>
+            </h1>
+            <p>Manage your events from here</p>
+        </div>
+        <div class="container__main__center">
+            <div class="card">
+                <div class="card__header card__header--no-border">
+                    <h1 style="font-size: 1.6rem;">Up coming</h1>
+                    <p>Stay ahead of events</p>
+                </div>
+                <div class="events-container__list" id="event-list"></div>
+                <div class="card__body empty flex--a-center flex--j-center" id="no-events" style="display: none;">
+                    <img src="/assets/illustrations/no-data.svg" alt="No data">
+                    <div class="empty_caption">
+                        <h1>No events</h1>
+                        <p>Your events will show here</p>
+                    </div>
+                </div>
+            </div>
+            <p class="flex flex--a-center" onclick="openModal('new-event')" style=" cursor: pointer; margin-top: 3rem;">
+                <svg class="image--icon" style="margin-right: 1rem;">
+                    <use href="#calendar-add"></use>
+                </svg>
+                <span>Start new event</span>
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="modal modal--closed flex--a-start flex--j-center" id="new-event-modal">
+    <form class="modal__main card" id="new-event-form">
+        <div class="card__header card__header--no-border flex flex--a-center flex--j-space-between">
+            <div>
+                <h1>New event.</h1>
+                <p>Organize events with ease</p>
+            </div>
+            <svg class="image--icon" onclick="closeModal('new-event')">
+                <use href="#cross"></use>
+            </svg>
+        </div>
+        <div class="card__body">
+            <input type="number" id="artist-count" value="1" hidden>
+            
+            <div class="flex">
+                <div style="flex: 0 15rem; margin-right: 2rem;">
+                    <div class="image--back" style="border-radius: 6px; height: 18rem; background-image: url('/assets/uploads/events/blank-photo.jpg');"></div>
+                    <label for="" style="text-align: center; margin-top: 1rem; display: block;">Change</label>
+                </div>
+                <div style="flex: 1;">
+                    <div class="input" style="margin-bottom: 1.1rem;">
+                        <input type="text" id="event-name" placeholder="Event name">
+                    </div>
+
+                    <div class="flex flex--j-space-between">
+                        <div class="input" style="flex: 0 0 49%;">
+                            <label>Start date</label>
+                            <input type="datetime-local" id="start-date">
+                        </div>
+                        <div class="input" style="flex: 0 0 49%;">
+                            <label>End date</label>
+                            <input type="datetime-local" id="end-date">
+                        </div>
+                    </div>
+                    
+                    <div class="artist-container" style="max-height: 20rem; overflow: auto;">
+                        <div class="input" id="artist-item-1" style="margin-top: 1.4rem;">
+                            <label for="artist-1" id="artist-1-label">Artist: 1</label>
+                            <div class="flex flex--a-center">
+                                <select id="artist-1" class="artists__item" style="flex: 1;">
+                                    <option value="select">Select</option>
+                                </select>
+                                <svg class="image--icon" style="margin-left: 1rem; fill: #b68c8c;" id="delete-item-1">
+                                    <use href="#cancel"></use>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card__footer">
+            <button class="btn btn--primary">Create event</button>
+            <button class="btn btn--primary"  type="button" onclick="createArtistItem()">Add artist</button>
+            <button type="button" class="btn"  onclick="closeModal('new-event')">Cancel</button>
+        </div>
+    </form>
+</div>
+
+<script src="/assets/js/dist/jquery.js"></script>
+<script src="/assets/js/dist/app.bundle.js"></script>
+
+<script>
+    Event.getAllByOrganizer()
+
+    $('#new-event-form').on('submit', e => {
+        e.preventDefault();
+        
+        Event.addDetails()
+    })
+</script>
