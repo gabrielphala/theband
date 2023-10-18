@@ -43,6 +43,7 @@ module.exports = (router) => {
         })
     );
 
+    router.post('/song/get-by-id', base_controller.wrap(SongService.getSongById));
     router.post('/songs/get-ready-by-artist', base_controller.wrap_with_store(SongService.getAllReadyByArtist));
     router.post('/songs/get-all-ready', base_controller.wrap(SongService.getAllReadySongs));
 };

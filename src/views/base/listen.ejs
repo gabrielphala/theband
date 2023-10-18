@@ -1,0 +1,50 @@
+<%- include('../partials/header/base') %>
+
+<div class="play-music flex flex--a-start">
+    <div class="play-music__thumbnails-n-controls" style="background-color: #ddd;">
+        <div class="play-music__thumbnails-n-controls__image image--back" id="song-cover" style="background-image: url('/assets/uploads/covers/default.png');"></div>
+        <div class="play-music__thumbnails-n-controls__controls flex flex--j-center">
+            <div style="position: relative;" class="play-music__thumbnails-n-controls__controls__play-toggle toggle-play">
+                <svg id="play-icon" class="image--icon pos--abs pos--center">
+                    <use href="#play"></use>
+                </svg>
+                <svg id="pause-icon" class="image--icon pos--abs pos--center" style="display: none;">
+                    <use href="#pause"></use>
+                </svg>
+            </div>
+            <audio id="audio-src"></audio>
+        </div>
+        </div>
+    <div class="play-music__other-songs" id="song-list"></div>
+</div>
+
+<script src="/assets/js/dist/jquery.js"></script>
+<script src="/assets/js/dist/app.bundle.js"></script>
+<script>
+    Song.loadSongToListen()
+    Song.loadNextSongsToListen()
+
+    let play = false;
+
+    let audio = $('#audio-src')[0];
+
+    $('.toggle-play').on('click', e => {
+        if (!play) {
+            audio.play()
+
+            $(`#pause-icon`).show();
+            $(`#play-icon`).hide();
+        }
+
+        else {
+            audio.pause();
+
+            $(`#pause-icon`).hide();
+            $(`#play-icon`).show();
+        }
+
+        play = !play;
+    })
+
+</script>
+

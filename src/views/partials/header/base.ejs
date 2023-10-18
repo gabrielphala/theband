@@ -1,9 +1,9 @@
-<header class="base flex flex--a-center">
+<header class="base flex flex--a-center flex--j-space-between">
     <div class="base__left flex flex--a-center">
         <div class="base__left__logo flex flex--a-center">
-            <div class="base__left__logo__circle">
+            <a href="/" class="base__left__logo__circle">
                 <img class="pos--center" src="/assets/illustrations/earbud.svg" alt="">
-            </div>
+            </a>
             <div>
                 <h1>the<span>Band</span></h1>
                 <p>For music lovers</p>
@@ -11,11 +11,22 @@
         </div>
         <div class="base__left__sep"></div>
         <nav class="base__left__main-nav flex flex--a-center">
-            <p>Home</p>
-            <p>Events</p>
+            <p><a href="/">Home</a></p>
+            <p><a href="/events">Events</a></p>
             <svg class="image--icon">
                 <use href="#search"></use>
             </svg>
         </nav>
+        
+    </div>
+    <div class="base__right" style="justify-self: right;">
+        <ul>
+            
+            <% if (locals.artistInfo) { %>
+                <li><a href="/artist/discography"><%= artistInfo.stage_name %></a></li>
+            <% } else if (locals.organizerInfo) {%>
+                <li><a href="/organizer/events"><%= organizerInfo.firstname + " " + organizerInfo.lastname %></a></li>
+            <% } %>
+        </ul>
     </div>
 </header>

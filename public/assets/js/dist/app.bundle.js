@@ -330,11 +330,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
 /* harmony import */ var _helpers_fetch__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../helpers/fetch */ "./public/assets/js/src/helpers/fetch.js");
 /* harmony import */ var _helpers_modal__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../helpers/modal */ "./public/assets/js/src/helpers/modal.js");
 /* harmony import */ var _helpers_format__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../helpers/format */ "./public/assets/js/src/helpers/format.js");
 /* harmony import */ var _helpers_array__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../helpers/array */ "./public/assets/js/src/helpers/array.js");
+/* harmony import */ var _helpers_urlquery_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../helpers/urlquery.js */ "./public/assets/js/src/helpers/urlquery.js");
+
 
 
 
@@ -347,7 +349,7 @@ __webpack_require__.r(__webpack_exports__);
       const cover = $('#song-cover')[0];
       const file = cover.files ? cover.files[0] : '';
       data.append('cover', file);
-      const res = await axios__WEBPACK_IMPORTED_MODULE_4__["default"].post('/song/add-cover', data, {
+      const res = await axios__WEBPACK_IMPORTED_MODULE_5__["default"].post('/song/add-cover', data, {
         headers: {
           'Content-Type': 'multipart/form-data'
         },
@@ -365,7 +367,7 @@ __webpack_require__.r(__webpack_exports__);
       const song = $('#song-file')[0];
       const file = song.files ? song.files[0] : '';
       data.append('song', file);
-      const res = await axios__WEBPACK_IMPORTED_MODULE_4__["default"].post('/song/add-file', data, {
+      const res = await axios__WEBPACK_IMPORTED_MODULE_5__["default"].post('/song/add-file', data, {
         headers: {
           'Content-Type': 'multipart/form-data'
         },
@@ -419,6 +421,23 @@ __webpack_require__.r(__webpack_exports__);
       }
       $('#song-list').html(' ');
       // $('#no-songs')[0].style.display = 'flex';
+    }
+
+    static async loadSongToListen() {
+      const song_id = (0,_helpers_urlquery_js__WEBPACK_IMPORTED_MODULE_4__.getQuery)('s');
+      const res = await (0,_helpers_fetch__WEBPACK_IMPORTED_MODULE_0__["default"])('/song/get-by-id', {
+        body: {
+          song_id
+        }
+      });
+      if (res.song) {
+        $('#song-cover')[0].style.backgroundImage = `url('/assets/uploads/covers/${res.song._album_cover || res.song.cover}')`;
+        $('#audio-src')[0].src = `/assets/uploads/songs/${res.song.file}`;
+      }
+    }
+    static async loadNextSongsToListen() {
+      const res = await (0,_helpers_fetch__WEBPACK_IMPORTED_MODULE_0__["default"])('/songs/get-all-ready');
+      $('#song-list').html((0,_helpers_format__WEBPACK_IMPORTED_MODULE_2__.formatSongsForNext)(res.songs));
     }
   };
 });
@@ -601,7 +620,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   formatInvitationsForArtists: () => (/* binding */ formatInvitationsForArtists),
 /* harmony export */   formatInvitationsForOrganizer: () => (/* binding */ formatInvitationsForOrganizer),
 /* harmony export */   formatSongsForArtist: () => (/* binding */ formatSongsForArtist),
-/* harmony export */   formatSongsForHome: () => (/* binding */ formatSongsForHome)
+/* harmony export */   formatSongsForHome: () => (/* binding */ formatSongsForHome),
+/* harmony export */   formatSongsForNext: () => (/* binding */ formatSongsForNext)
 /* harmony export */ });
 /* harmony import */ var _datetime_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./datetime.js */ "./public/assets/js/src/helpers/datetime.js");
 
@@ -714,6 +734,25 @@ const formatSongsForHome = songs => {
                     <p>${song.stage_name}</p>
                 </div>
             </div>
+        `;
+  });
+  return formated;
+};
+const formatSongsForNext = songs => {
+  let formated = '';
+  songs.forEach(song => {
+    formated += `
+            <a href="/listen?s=${song.id}" class="play-music__other-songs__item flex">
+                <div class="pos--rel play-music__other-songs__item__thumbnail image--back" style="background-image: url('/assets/uploads/covers/${song._album_cover || song.cover}')">
+                    <svg class="image--icon pos--abs pos--center">
+                        <use href="#play"></use>
+                    </svg>
+                </div>
+                <div class="play-music__other-songs__item__details">
+                    <h4>${song.name} | ${song.album_id ? song._album_name : 'Single'}</h4>
+                    <p>${song.stage_name}</p>
+                </div>
+            </a>
         `;
   });
   return formated;

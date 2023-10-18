@@ -2,8 +2,9 @@ import axios from "axios"
 
 import fetch from "../helpers/fetch";
 import { closeModal } from "../helpers/modal";
-import { formatSongsForArtist, formatSongsForHome } from "../helpers/format";
+import { formatSongsForArtist, formatSongsForHome, formatSongsForNext } from "../helpers/format";
 import { arrayNotEmpty } from "../helpers/array";
+import { getQuery } from "../helpers/urlquery.js";
 
 export default () => {
     window.Song = class Song {
@@ -111,6 +112,27 @@ export default () => {
 
             $('#song-list').html(' ')
             // $('#no-songs')[0].style.display = 'flex';
+        }
+
+        static async loadSongToListen () {
+            const song_id = getQuery('s');
+
+            const res = await fetch('/song/get-by-id', {
+                body: {
+                    song_id
+                }
+            })
+
+            if (res.song) {
+                $('#song-cover')[0].style.backgroundImage = `url('/assets/uploads/covers/${res.song._album_cover || res.song.cover}')`
+                $('#audio-src')[0].src = `/assets/uploads/songs/${res.song.file}`;
+            }
+        }
+
+        static async loadNextSongsToListen () {
+             const res = await fetch('/songs/get-all-ready')
+
+            $('#song-list').html(formatSongsForNext(res.songs))
         }
     }
 }

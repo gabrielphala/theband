@@ -587,6 +587,52 @@ li {
   gap: 1rem;
   grid-template-columns: repeat(7, 1fr);
 }
+.play-music {
+  width: 80%;
+  margin: 15rem auto 0;
+}
+.play-music__thumbnails-n-controls {
+  position: relative;
+  flex: 0 0 60%;
+  margin-right: 2rem;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.play-music__thumbnails-n-controls__image {
+  height: 50rem;
+}
+.play-music__thumbnails-n-controls__controls {
+  position: absolute;
+  bottom: 1rem;
+  width: 100%;
+}
+.play-music__thumbnails-n-controls__controls__play-toggle {
+  width: 5rem;
+  height: 5rem;
+  background-color: #ffcaca;
+  border-radius: 50%;
+}
+.play-music__other-songs {
+  flex: 0 0 40%;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid #eee;
+  padding: 1rem;
+}
+.play-music__other-songs__item:not(:last-child) {
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #eee;
+}
+.play-music__other-songs__item__thumbnail {
+  flex: 0 0 5rem;
+  height: 5rem;
+  margin-right: 1rem;
+  border-radius: 4px;
+}
+.play-music__other-songs__item__details {
+  flex: 1;
+}
 .events-container {
   padding: 7rem 22% 0;
 }

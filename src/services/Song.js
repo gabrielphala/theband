@@ -90,6 +90,23 @@ module.exports = class SongService {
         return res_wrap;
     }
 
+    static async getSongById (res_wrap, body) {
+        try {
+            const { song_id } = body;
+
+            res_wrap.song = (await Song.findOne({
+                condition: {
+                    id: song_id
+                }
+            })).toObject()
+
+            res_wrap.successful = true;
+
+        } catch (e) { throw e; }
+
+        return res_wrap;
+    }
+
     static async deleteSongById (res_wrap, body) {
         try {
             Song.deleteSongById(body.song_id);
