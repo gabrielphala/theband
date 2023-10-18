@@ -709,12 +709,18 @@ const formatSongsForArtist = songs => {
     formated += `
             <div class="container__main__center__covers__item">
                 <div class="container__main__center__covers__item__back image--back" style="position: relative; background-image: url('/assets/uploads/covers/${song._album_cover || song.cover}');">
-                    <svg class="container__main__center__covers__item__back__del image--icon pos--abs" data-songid="${song.id}" style="right: .8rem; bottom: .8rem;">
+                    <svg class="container__main__center__covers__item__back__del image--icon pos--abs" data-songid="${song.id}" style=" cursor: pointer; right: .8rem; bottom: .8rem;">
                         <use href="#trash"></use>
                     </svg>
+
+                    <a href="/listen?s=${song.id}" >
+                        <svg class="image--icon pos--abs pos--center">
+                            <use href="#play"></use>
+                        </svg>
+                    </a>
                 </div>
                 <div class="container__main__center__covers__item__details">
-                    <p>${song.name} | ${song.album_id ? song._album_name : 'Single'}</p>
+                    <p><a href="/listen?s=${song.id}" >${song.name} | ${song.album_id ? song._album_name : 'Single'}</a></p>
                 </div>
             </div>
         `;
