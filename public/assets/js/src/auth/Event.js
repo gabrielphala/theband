@@ -1,7 +1,7 @@
 import { arrayNotEmpty } from "../helpers/array.js";
 import fetch from "../helpers/fetch.js"
 
-import { formatArtistSelect, formatEventsForOrganizer } from "../helpers/format.js";
+import { formatArtistSelect, formatEventsForOrganizer, formatEventsForHome } from "../helpers/format.js";
 import { closeModal } from "../helpers/modal";
 import { getQuery } from "../helpers/urlquery.js";
 
@@ -43,6 +43,17 @@ export default () => {
 
             $('#event-list').html(' ');
             $('#no-events')[0].style.display = 'flex'
+        }
+
+        static async getAll () {
+            const response = await fetch('/events/get-all-ready')
+
+            if (arrayNotEmpty(response.events)) {
+                $('#event-list').html(formatEventsForHome(response.events));
+                return 
+            }
+
+            $('#event-list').html(' ');
         }
 
         static async viewOne () {

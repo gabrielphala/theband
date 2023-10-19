@@ -34,6 +34,8 @@ module.exports = class AlbumService {
         try {
             const artistId = req.store.artistInfo.id;
 
+            if (!req.files[0]) return res_wrap;
+
             const albumInfo = await AlbumService.getIncompleteByArtist(artistId)
 
             albumInfo.has_cover = true;

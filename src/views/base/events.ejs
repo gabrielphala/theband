@@ -11,14 +11,15 @@
             <h1 style="font-size: 1.6rem;">Up coming</h1>
             <p>Stay ahead of events</p>
         </div>
-        <div class="events-container__list">
-            <div class="events-container__list__item flex">
-                <div class="events-container__list__item__back image--back" style="background-image: url('/assets/uploads/events/html-code.jpg');"></div>
-                <div class="events-container__list__item__details">
-                    <h4>2022 July Coding haackathon</h4>
-                    <p>2023, July 23: 10:00</p>
-                </div>
-            </div>
+        <div class="events-container__list" id="event-list">
+            
         </div>
     </div>
 </div>
+
+<script src="/assets/js/dist/jquery.js"></script>
+<script src="/assets/js/dist/app.bundle.js"></script>
+
+<script>
+    Event.getAll()
+</script>

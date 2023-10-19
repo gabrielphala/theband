@@ -24,6 +24,18 @@ module.exports = class EventService {
         return res_wrap;
     }
 
+    static async getAll (res_wrap, body) {
+        try {
+            res_wrap.events = await Event.find({
+                condition: {
+                    is_ready: true
+                }
+            });
+        } catch (e) { throw e; }
+
+        return res_wrap;
+    }
+
     static async publish (res_wrap, body) {
         try {
             await Event.publish(body.event_id);

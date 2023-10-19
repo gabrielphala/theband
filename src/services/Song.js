@@ -39,6 +39,8 @@ module.exports = class SongService {
         try {
             const artistId = req.store.artistInfo.id;
 
+            if (!req.files[0]) return res_wrap;
+
             const songInfo = await SongService.getIncompleteByArtist(artistId)
 
             songInfo.cover = req.files[0].filename;

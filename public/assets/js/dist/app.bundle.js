@@ -191,6 +191,14 @@ __webpack_require__.r(__webpack_exports__);
       $('#event-list').html(' ');
       $('#no-events')[0].style.display = 'flex';
     }
+    static async getAll() {
+      const response = await (0,_helpers_fetch_js__WEBPACK_IMPORTED_MODULE_1__["default"])('/events/get-all-ready');
+      if ((0,_helpers_array_js__WEBPACK_IMPORTED_MODULE_0__.arrayNotEmpty)(response.events)) {
+        $('#event-list').html((0,_helpers_format_js__WEBPACK_IMPORTED_MODULE_2__.formatEventsForHome)(response.events));
+        return;
+      }
+      $('#event-list').html(' ');
+    }
     static async viewOne() {
       const res = await (0,_helpers_fetch_js__WEBPACK_IMPORTED_MODULE_1__["default"])('/event/get-one-by-id', {
         body: {
@@ -674,6 +682,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   formatAlbumsForArtist: () => (/* binding */ formatAlbumsForArtist),
 /* harmony export */   formatArtistSelect: () => (/* binding */ formatArtistSelect),
+/* harmony export */   formatEventsForHome: () => (/* binding */ formatEventsForHome),
 /* harmony export */   formatEventsForOrganizer: () => (/* binding */ formatEventsForOrganizer),
 /* harmony export */   formatInvitationsForArtists: () => (/* binding */ formatInvitationsForArtists),
 /* harmony export */   formatInvitationsForOrganizer: () => (/* binding */ formatInvitationsForOrganizer),
@@ -720,6 +729,23 @@ const formatEventsForOrganizer = events => {
                     </div>
                     <div>
                         <p data-inviteid="${_event.id}"><a href="/organizer/events/manage?e=${_event.id}">Manage</a></p>
+                    </div>
+                </div>
+            </div>
+        `;
+  });
+  return formated;
+};
+const formatEventsForHome = events => {
+  let formated = '';
+  events.forEach(_event => {
+    formated += `
+            <div class="events-container__list__item flex" style="margin-bottom: 1rem;">
+                <div class="events-container__list__item__back image--back" style="background-image: url('/assets/uploads/events/blank-photo.jpg');"></div>
+                <div class="events-container__list__item__details flex flex--j-space-between" style="flex-direction: column;">
+                    <div>
+                        <h4>${_event.name}</h4>
+                        <p>${(0,_datetime_js__WEBPACK_IMPORTED_MODULE_0__.getStaticDate)(_event.start_date)}</p>
                     </div>
                 </div>
             </div>
@@ -801,6 +827,7 @@ const formatSongsForHome = songs => {
                 <div class="song__details">
                     <h4>${song.name} | ${song.album_id ? song._album_name : 'Single'}</h4>
                     <p>${song.stage_name}</p>
+                    <p>${song.genre}</p>
                 </div>
             </div>
         `;
