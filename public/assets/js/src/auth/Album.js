@@ -4,6 +4,7 @@ import fetch from "../helpers/fetch";
 import { closeModal, openModal } from "../helpers/modal";
 import { arrayNotEmpty } from "../helpers/array";
 import { formatAlbumsForArtist } from "../helpers/format";
+import { showError } from "../helpers/error";
 
 export default () => {
     window.Album = class Album {
@@ -42,8 +43,12 @@ export default () => {
             if (res.successful) {
                 closeModal('new-album')
 
-                Album.getReadyAlbumsByArtist()
+                Album.getReadyAlbumsByArtist();
+
+                return;
             }
+
+            showError('new-album-error', res.error)
         }
 
         static async removeAlbum (album_id) {

@@ -12,17 +12,19 @@
                 </div>
             </div>
         </div>
-        <form class="auth__main__form card">
+        <form class="auth__main__form card" id="sign-in-form">
             <div class="card__header card__header--no-border">
                 <h1>Sign in</h1>
                 <p>Welcome back :)</p>
             </div>
             <div class="card__body">
+                <p class="error-container" id="auth-error" style="margin-bottom: 1rem;"></p>
+
                 <div class="input">
-                    <input type="email" name="" id="" placeholder="Email address">
+                    <input type="email" id="email-address" placeholder="Email address">
                 </div>
                 <div class="input">
-                    <input type="password" name="" id="" placeholder="Password">
+                    <input type="password" id="password" placeholder="Password">
                 </div>
             </div>
             <div class="card__footer card__footer--no-border">
@@ -30,9 +32,20 @@
             </div>
         </form>
         <div class="auth__main__footer flex flex--j-space-around">
-            <p>Create a account</p>
-            <p>Record label sign in</p>
-            <p>Artist sign in</p>
+            <p><a href="/sign-up">Create a account</a></p>
+            <p><a href="/organizer/sign-in">Organizer sign in</a></p>
+            <p><a href="/artist/sign-in">Artist sign in</a></p>
         </div>
     </div>
 </div>
+
+<script src="/assets/js/dist/jquery.js"></script>
+<script src="/assets/js/dist/app.bundle.js"></script>
+
+<script type="module">
+    $('#sign-in-form').on('submit', async e => {
+        e.preventDefault()
+
+        await Supporter.signIn()
+    })
+</script>

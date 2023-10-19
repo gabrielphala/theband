@@ -10,6 +10,7 @@ module.exports = new (class Song extends SQLifier {
             album_id: { type: 'int', ref: 'album' },
             artist_id: { type: 'int', ref: 'artist' },
             cover: { type: 'varchar', length: 255, default: 'default.png' },
+            genre: { type: 'varchar', length: 55 },
             file: { type: 'varchar', length: 255 },
             has_file: { type: 'boolean', default: false },
             is_ready: { type: 'boolean', default: false },

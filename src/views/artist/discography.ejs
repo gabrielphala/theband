@@ -75,9 +75,24 @@
                 <label for="song-cover" style="cursor: pointer; display: block; text-align: center; margin-top: 1rem;">Select cover image</label>
             </div>
             <div style="flex: 1;">
+                <p class="error-container" id="new-song-error" style="margin-bottom: 1rem;"></p>
+
                 <input type="text" id="album-id" hidden>
                 <div class="input" style="margin-top: 2rem;">
                     <input type="text" id="song-name" placeholder="Song name">
+                </div>
+                <div class="input" style="margin-top: 2rem;">
+                    <select id="song-genre">
+                        <option value="select">-- Select --</option>
+                        <option value="hip hop">Hip Hop</option>
+                        <option value="k pop">k Pop</option>
+                        <option value="rap">rap</option>
+                        <option value="house">house</option>
+                        <option value="jazz">jazz</option>
+                        <option value="blues">blues</option>
+                        <option value="R and B">R and B</option>
+                        <option value="amapiano">Amapiano</option>
+                    </select>
                 </div>
                 <div class="input flex" style="margin-top: 2rem;">
                     <label for="song-file" style="cursor: pointer;">Select song file</label>
@@ -115,6 +130,8 @@
                 <label for="album-cover" style="cursor: pointer; display: block; text-align: center; margin-top: 1rem;">Select cover image</label>
             </div>
             <div style="flex: 1;">
+                <p class="error-container" id="new-album-error" style="margin-bottom: 1rem;"></p>
+
                 <div class="input" style="margin-top: 2rem;">
                     <input type="text" id="album-name" placeholder="Album name">
                 </div>

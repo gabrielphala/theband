@@ -12,11 +12,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
 /* harmony import */ var _helpers_fetch__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../helpers/fetch */ "./public/assets/js/src/helpers/fetch.js");
 /* harmony import */ var _helpers_modal__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../helpers/modal */ "./public/assets/js/src/helpers/modal.js");
 /* harmony import */ var _helpers_array__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../helpers/array */ "./public/assets/js/src/helpers/array.js");
 /* harmony import */ var _helpers_format__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../helpers/format */ "./public/assets/js/src/helpers/format.js");
+/* harmony import */ var _helpers_error__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../helpers/error */ "./public/assets/js/src/helpers/error.js");
+
 
 
 
@@ -29,7 +31,7 @@ __webpack_require__.r(__webpack_exports__);
       const cover = $('#album-cover')[0];
       const file = cover.files ? cover.files[0] : '';
       data.append('cover', file);
-      const res = await axios__WEBPACK_IMPORTED_MODULE_4__["default"].post('/album/add-cover', data, {
+      const res = await axios__WEBPACK_IMPORTED_MODULE_5__["default"].post('/album/add-cover', data, {
         headers: {
           'Content-Type': 'multipart/form-data'
         },
@@ -51,7 +53,9 @@ __webpack_require__.r(__webpack_exports__);
       if (res.successful) {
         (0,_helpers_modal__WEBPACK_IMPORTED_MODULE_1__.closeModal)('new-album');
         Album.getReadyAlbumsByArtist();
+        return;
       }
+      (0,_helpers_error__WEBPACK_IMPORTED_MODULE_4__.showError)('new-album-error', res.error);
     }
     static async removeAlbum(album_id) {
       await (0,_helpers_fetch__WEBPACK_IMPORTED_MODULE_0__["default"])('/album/delete', {
@@ -330,12 +334,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
 /* harmony import */ var _helpers_fetch__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../helpers/fetch */ "./public/assets/js/src/helpers/fetch.js");
 /* harmony import */ var _helpers_modal__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../helpers/modal */ "./public/assets/js/src/helpers/modal.js");
 /* harmony import */ var _helpers_format__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../helpers/format */ "./public/assets/js/src/helpers/format.js");
 /* harmony import */ var _helpers_array__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../helpers/array */ "./public/assets/js/src/helpers/array.js");
 /* harmony import */ var _helpers_urlquery_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../helpers/urlquery.js */ "./public/assets/js/src/helpers/urlquery.js");
+/* harmony import */ var _helpers_error__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../helpers/error */ "./public/assets/js/src/helpers/error.js");
+
 
 
 
@@ -349,7 +355,7 @@ __webpack_require__.r(__webpack_exports__);
       const cover = $('#song-cover')[0];
       const file = cover.files ? cover.files[0] : '';
       data.append('cover', file);
-      const res = await axios__WEBPACK_IMPORTED_MODULE_5__["default"].post('/song/add-cover', data, {
+      const res = await axios__WEBPACK_IMPORTED_MODULE_6__["default"].post('/song/add-cover', data, {
         headers: {
           'Content-Type': 'multipart/form-data'
         },
@@ -367,7 +373,7 @@ __webpack_require__.r(__webpack_exports__);
       const song = $('#song-file')[0];
       const file = song.files ? song.files[0] : '';
       data.append('song', file);
-      const res = await axios__WEBPACK_IMPORTED_MODULE_5__["default"].post('/song/add-file', data, {
+      const res = await axios__WEBPACK_IMPORTED_MODULE_6__["default"].post('/song/add-file', data, {
         headers: {
           'Content-Type': 'multipart/form-data'
         },
@@ -381,13 +387,16 @@ __webpack_require__.r(__webpack_exports__);
       const res = await (0,_helpers_fetch__WEBPACK_IMPORTED_MODULE_0__["default"])('/song/add-name', {
         body: {
           name: $('#song-name').val(),
+          genre: $('#song-genre').val(),
           album_id: $('#album-id').val() || null
         }
       });
       if (res.successful) {
         (0,_helpers_modal__WEBPACK_IMPORTED_MODULE_1__.closeModal)('new-song');
         Song.getReadySongsByArtist();
+        return;
       }
+      (0,_helpers_error__WEBPACK_IMPORTED_MODULE_5__.showError)('new-song-error', res.error);
     }
     static async removeSong(song_id) {
       const res = await (0,_helpers_fetch__WEBPACK_IMPORTED_MODULE_0__["default"])('/song/delete', {
@@ -438,6 +447,55 @@ __webpack_require__.r(__webpack_exports__);
     static async loadNextSongsToListen() {
       const res = await (0,_helpers_fetch__WEBPACK_IMPORTED_MODULE_0__["default"])('/songs/get-all-ready');
       $('#song-list').html((0,_helpers_format__WEBPACK_IMPORTED_MODULE_2__.formatSongsForNext)(res.songs));
+    }
+  };
+});
+
+/***/ }),
+
+/***/ "./public/assets/js/src/auth/Supporter.js":
+/*!************************************************!*\
+  !*** ./public/assets/js/src/auth/Supporter.js ***!
+  \************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _helpers_fetch_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../helpers/fetch.js */ "./public/assets/js/src/helpers/fetch.js");
+/* harmony import */ var _helpers_error_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../helpers/error.js */ "./public/assets/js/src/helpers/error.js");
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (() => {
+  window.Supporter = class Supporter {
+    static async signUp() {
+      const response = await (0,_helpers_fetch_js__WEBPACK_IMPORTED_MODULE_0__["default"])('/supporter/sign-up', {
+        body: {
+          firstname: $('#firstname').val(),
+          lastname: $('#lastname').val(),
+          email: $('#email-address').val(),
+          password: $('#password').val(),
+          passwordAgain: $('#password-again').val()
+        }
+      });
+      if (response.successful) {
+        return location.href = '/';
+      }
+      (0,_helpers_error_js__WEBPACK_IMPORTED_MODULE_1__.showError)('auth-error', response.error);
+    }
+    static async signIn() {
+      const response = await (0,_helpers_fetch_js__WEBPACK_IMPORTED_MODULE_0__["default"])('/supporter/sign-in', {
+        body: {
+          email: $('#email-address').val(),
+          password: $('#password').val()
+        }
+      });
+      if (response.successful) {
+        location.href = '/';
+        return;
+      }
+      (0,_helpers_error_js__WEBPACK_IMPORTED_MODULE_1__.showError)('auth-error', response.error);
     }
   };
 });
@@ -733,7 +791,12 @@ const formatSongsForHome = songs => {
     console.log(song);
     formated += `
             <div class="song">
-                <div class="song__background image--back" style="background-image: url('/assets/uploads/covers/${song._album_cover || song.cover}');">
+                <div class="song__background image--back pos--rel" style="background-image: url('/assets/uploads/covers/${song._album_cover || song.cover}');">
+                    <a href="/listen?s=${song.id}" >
+                        <svg class="image--icon pos--abs pos--center">
+                            <use href="#play"></use>
+                        </svg>
+                    </a>
                 </div>
                 <div class="song__details">
                     <h4>${song.name} | ${song.album_id ? song._album_name : 'Single'}</h4>
@@ -4916,14 +4979,16 @@ var __webpack_exports__ = {};
   \*************************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _auth_Artist__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./auth/Artist */ "./public/assets/js/src/auth/Artist.js");
-/* harmony import */ var _auth_Organizer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./auth/Organizer */ "./public/assets/js/src/auth/Organizer.js");
-/* harmony import */ var _auth_Event__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./auth/Event */ "./public/assets/js/src/auth/Event.js");
-/* harmony import */ var _auth_Invitation__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./auth/Invitation */ "./public/assets/js/src/auth/Invitation.js");
-/* harmony import */ var _auth_Album__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./auth/Album */ "./public/assets/js/src/auth/Album.js");
-/* harmony import */ var _auth_Song__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./auth/Song */ "./public/assets/js/src/auth/Song.js");
-/* harmony import */ var _helpers_modal__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./helpers/modal */ "./public/assets/js/src/helpers/modal.js");
-/* harmony import */ var _helpers_artist_selection__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./helpers/artist-selection */ "./public/assets/js/src/helpers/artist-selection.js");
-/* harmony import */ var _helpers_urlquery__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./helpers/urlquery */ "./public/assets/js/src/helpers/urlquery.js");
+/* harmony import */ var _auth_Supporter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./auth/Supporter */ "./public/assets/js/src/auth/Supporter.js");
+/* harmony import */ var _auth_Organizer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./auth/Organizer */ "./public/assets/js/src/auth/Organizer.js");
+/* harmony import */ var _auth_Event__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./auth/Event */ "./public/assets/js/src/auth/Event.js");
+/* harmony import */ var _auth_Invitation__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./auth/Invitation */ "./public/assets/js/src/auth/Invitation.js");
+/* harmony import */ var _auth_Album__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./auth/Album */ "./public/assets/js/src/auth/Album.js");
+/* harmony import */ var _auth_Song__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./auth/Song */ "./public/assets/js/src/auth/Song.js");
+/* harmony import */ var _helpers_modal__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./helpers/modal */ "./public/assets/js/src/helpers/modal.js");
+/* harmony import */ var _helpers_artist_selection__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./helpers/artist-selection */ "./public/assets/js/src/helpers/artist-selection.js");
+/* harmony import */ var _helpers_urlquery__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./helpers/urlquery */ "./public/assets/js/src/helpers/urlquery.js");
+
 
 
 
@@ -4934,16 +4999,17 @@ __webpack_require__.r(__webpack_exports__);
 
 
 (0,_auth_Artist__WEBPACK_IMPORTED_MODULE_0__["default"])();
-(0,_auth_Organizer__WEBPACK_IMPORTED_MODULE_1__["default"])();
-(0,_auth_Invitation__WEBPACK_IMPORTED_MODULE_3__["default"])();
-(0,_auth_Event__WEBPACK_IMPORTED_MODULE_2__["default"])();
-(0,_auth_Album__WEBPACK_IMPORTED_MODULE_4__["default"])();
-(0,_auth_Song__WEBPACK_IMPORTED_MODULE_5__["default"])();
-window.getQuery = _helpers_urlquery__WEBPACK_IMPORTED_MODULE_8__.getQuery;
-window.closeModal = _helpers_modal__WEBPACK_IMPORTED_MODULE_6__.closeModal;
-window.openModal = _helpers_modal__WEBPACK_IMPORTED_MODULE_6__.openModal;
-window.createArtistItem = _helpers_artist_selection__WEBPACK_IMPORTED_MODULE_7__.createArtistItem;
-window.removeArtistItem = _helpers_artist_selection__WEBPACK_IMPORTED_MODULE_7__.removeArtistItem;
+(0,_auth_Supporter__WEBPACK_IMPORTED_MODULE_1__["default"])();
+(0,_auth_Organizer__WEBPACK_IMPORTED_MODULE_2__["default"])();
+(0,_auth_Invitation__WEBPACK_IMPORTED_MODULE_4__["default"])();
+(0,_auth_Event__WEBPACK_IMPORTED_MODULE_3__["default"])();
+(0,_auth_Album__WEBPACK_IMPORTED_MODULE_5__["default"])();
+(0,_auth_Song__WEBPACK_IMPORTED_MODULE_6__["default"])();
+window.getQuery = _helpers_urlquery__WEBPACK_IMPORTED_MODULE_9__.getQuery;
+window.closeModal = _helpers_modal__WEBPACK_IMPORTED_MODULE_7__.closeModal;
+window.openModal = _helpers_modal__WEBPACK_IMPORTED_MODULE_7__.openModal;
+window.createArtistItem = _helpers_artist_selection__WEBPACK_IMPORTED_MODULE_8__.createArtistItem;
+window.removeArtistItem = _helpers_artist_selection__WEBPACK_IMPORTED_MODULE_8__.removeArtistItem;
 })();
 
 /******/ })()

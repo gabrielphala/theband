@@ -126,7 +126,12 @@ export const formatSongsForHome = (songs) => {
         console.log(song);
         formated += `
             <div class="song">
-                <div class="song__background image--back" style="background-image: url('/assets/uploads/covers/${song._album_cover || song.cover}');">
+                <div class="song__background image--back pos--rel" style="background-image: url('/assets/uploads/covers/${song._album_cover || song.cover}');">
+                    <a href="/listen?s=${song.id}" >
+                        <svg class="image--icon pos--abs pos--center">
+                            <use href="#play"></use>
+                        </svg>
+                    </a>
                 </div>
                 <div class="song__details">
                     <h4>${song.name} | ${song.album_id ? song._album_name : 'Single'}</h4>

@@ -17,7 +17,10 @@ module.exports = class SongService {
         try {
             const songInfo = await SongService.getIncompleteByArtist(artistInfo.id)
 
+            if (body.genre == 'select') throw 'Please select genre'
+
             songInfo.name = body.name;
+            songInfo.genre = body.genre;
             songInfo.album_id = body.album_id || null;
 
             if (songInfo.has_file || body.album_id && songInfo.has_file)

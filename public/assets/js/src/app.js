@@ -1,4 +1,5 @@
 import Artist from "./auth/Artist";
+import Supporter from "./auth/Supporter";
 import Organizer from "./auth/Organizer";
 import Event from "./auth/Event";
 import Invitation from "./auth/Invitation";
@@ -10,6 +11,7 @@ import { createArtistItem, removeArtistItem } from "./helpers/artist-selection";
 import { getQuery } from "./helpers/urlquery";
 
 Artist();
+Supporter();
 Organizer();
 Invitation();
 Event();

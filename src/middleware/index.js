@@ -21,6 +21,32 @@ const jwt = require('../helpers/Jwt');
 //     next();
 // }
 
+module.exports.isLoggedIn = (req, res, next) => {
+    if (!req.cookies || !req.store)
+        return res.redirect('/sign-in');
+
+    console.log(req.store.supporterInfo);
+
+    if (req.store && !req.store.artistInfo && !req.store.organizerInfo && !req.store.supporterInfo)
+        return res.redirect('/sign-in');
+
+    next();
+}
+
+module.exports.isArtistLoggedIn = (req, res, next) => {
+    if (!req.cookies || !req.store || req.store && !req.store.artistInfo)
+        return res.redirect('/artist/sign-in');
+
+    next();
+}
+
+module.exports.isOrganizerLoggedIn = (req, res, next) => {
+    if (!req.cookies || !req.store || req.store && !req.store.organizerInfo)
+        return res.redirect('/organizer/sign-in');
+
+    next();
+}
+
 module.exports.loadArtistInfo = (req, res, next) => {
     if (!req.cookies || req.cookies && !req.cookies['tb_artist'])
         return next();
@@ -43,6 +69,19 @@ module.exports.loadOrganizerInfo = (req, res, next) => {
         if (!req.store) req.store = {}
         req.store.organizerInfo = organizerInfo;
         res.locals.organizerInfo = organizerInfo;
+    });
+
+    next();
+}
+
+module.exports.loadSupporterInfo = (req, res, next) => {
+    if (!req.cookies || req.cookies && !req.cookies['tb_supporter'])
+        return next();
+
+    jwt.verify(req.cookies['tb_supporter'].jwtAccess, (supporterInfo) => {
+        if (!req.store) req.store = {}
+        req.store.supporterInfo = supporterInfo;
+        res.locals.supporterInfo = supporterInfo;
     });
 
     next();

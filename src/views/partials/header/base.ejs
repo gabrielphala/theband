@@ -20,11 +20,19 @@
         
     </div>
     <div class="base__right" style="justify-self: right;">
-        <ul>
+        <ul class="flex">
             <% if (locals.artistInfo) { %>
                 <li><a href="/artist/discography"><%= artistInfo.stage_name %></a></li>
+                <li style="margin-left: 1rem;"><a href="/sign-out">Sign out</a></li>
             <% } else if (locals.organizerInfo) {%>
                 <li><a href="/organizer/events"><%= organizerInfo.firstname + " " + organizerInfo.lastname %></a></li>
+                <li style="margin-left: 1rem;"><a href="/sign-out">Sign out</a></li>
+            <% } else if (locals.supporterInfo) {%>
+                <li><%= supporterInfo.firstname + " " + supporterInfo.lastname %></li>
+                <li style="margin-left: 1rem;"><a href="/sign-out">Sign out</a></li>
+            <% } else { %>
+                <li><a href="/sign-in">Sign in</a></li>
+                <li style="margin-left: 1rem;"><a href="/sign-in">Sign up</a></li>
             <% } %>
         </ul>
     </div>

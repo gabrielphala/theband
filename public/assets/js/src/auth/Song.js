@@ -5,6 +5,7 @@ import { closeModal } from "../helpers/modal";
 import { formatSongsForArtist, formatSongsForHome, formatSongsForNext } from "../helpers/format";
 import { arrayNotEmpty } from "../helpers/array";
 import { getQuery } from "../helpers/urlquery.js";
+import { showError } from "../helpers/error";
 
 export default () => {
     window.Song = class Song {
@@ -57,6 +58,7 @@ export default () => {
             const res = await fetch('/song/add-name', {
                 body: {
                     name: $('#song-name').val(),
+                    genre: $('#song-genre').val(),
                     album_id: $('#album-id').val() || null
                 }
             })
@@ -65,7 +67,11 @@ export default () => {
                 closeModal('new-song')
 
                 Song.getReadySongsByArtist()
+
+                return;
             }
+
+            showError('new-song-error', res.error)
         }
 
         static async removeSong (song_id) {

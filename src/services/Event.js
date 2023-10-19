@@ -58,17 +58,21 @@ module.exports = class EventService {
 
             const used = [];
 
-            body.artists.forEach(artist => {
-                if (used.includes(artist)) return;
+            try {
+                body.artists.forEach(artist => {
+                    if (artist == 'select') throw 'Please specify artist';
 
-                Invitation.insert({
-                    organizer_id: organizerInfo.id,
-                    artist_id: artist,
-                    event_id: eventInfo.id
-                })
+                    if (used.includes(artist)) return;
 
-                used.push(artist);
-            });
+                    Invitation.insert({
+                        organizer_id: organizerInfo.id,
+                        artist_id: artist,
+                        event_id: eventInfo.id
+                    })
+
+                    used.push(artist);
+                });
+            } catch (e) { throw e; }
 
             eventInfo.save();
 

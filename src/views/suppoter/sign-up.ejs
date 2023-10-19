@@ -1,0 +1,60 @@
+<div class="auth">
+    <div class="auth__background-color pos--vertical"></div>
+    <div class="auth__main" style="margin-top: 12rem;">
+        <div class="auth__main__header">
+            <div class="auth__main__header__logo flex flex--a-center">
+                <div class="auth__main__header__logo__circle">
+                    <img class="pos--center" src="/assets/illustrations/earbud.svg" alt="">
+                </div>
+                <div>
+                    <h1>the<span>Band</span></h1>
+                    <p>For music lovers</p>
+                </div>
+            </div>
+        </div>
+        <form class="auth__main__form card" id="sign-up-form">
+            <div class="card__header card__header--no-border">
+                <h1>Sign up</h1>
+                <p>Welcome :)</p>
+            </div>
+            <div class="card__body">
+                <p class="error-container" id="auth-error" style="margin-bottom: 1rem;"></p>
+
+                <div class="input">
+                    <input type="text" id="firstname" placeholder="First name">
+                </div>
+                <div class="input">
+                    <input type="text" id="lastname" placeholder="Last name">
+                </div>
+                <div class="input">
+                    <input type="email" id="email-address" placeholder="Email address">
+                </div>
+                <div class="input">
+                    <input type="password" id="password" placeholder="Password">
+                </div>
+                <div class="input">
+                    <input type="password" id="password-again" placeholder="Password again">
+                </div>
+            </div>
+            <div class="card__footer card__footer--no-border">
+                <button class="btn btn--primary">Sign up</button>
+            </div>
+        </form>
+        <div class="auth__main__footer flex flex--j-space-around">
+            <p><a href="/sign-in">Sign in instead</a></p>
+            <p><a href="/organizer/sign-in">Organizer sign in</a></p>
+            <p><a href="/artist/sign-in">Artist sign in</a></p>
+        </div>
+    </div>
+</div>
+
+<script src="/assets/js/dist/jquery.js"></script>
+<script src="/assets/js/dist/app.bundle.js"></script>
+
+<script type="module">
+    $('#sign-up-form').on('submit', async e => {
+        e.preventDefault()
+
+        await Supporter.signUp()
+    })
+</script>
