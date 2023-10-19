@@ -1,0 +1,25 @@
+<%- include('../partials/header/base') %>
+
+<div class="events-container">
+    <div class="events-container__title">
+        <h1>Event details</h1>
+        <p>Event invitees</p>
+        <div class="events-container__hr"></div>
+    </div>
+    <div class="card">
+        <div class="card__header card__header--no-border">
+            <h1 style="font-size: 1.6rem;">Invited artists</h1>
+            <p>See who will be there</p>
+        </div>
+        <div class="events-container__list flex" style="padding: 2rem; gap: 2rem;" id="invitation-list">
+            
+        </div>
+    </div>
+</div>
+
+<script src="/assets/js/dist/jquery.js"></script>
+<script src="/assets/js/dist/app.bundle.js"></script>
+
+<script>
+    Invitation.getForHome()
+</script>

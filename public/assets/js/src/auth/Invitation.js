@@ -1,7 +1,8 @@
 import { arrayNotEmpty } from "../helpers/array.js";
 import fetch from "../helpers/fetch.js"
 
-import { formatInvitationsForArtists, formatInvitationsForOrganizer } from "../helpers/format.js";
+import { formatInvitationsForArtists, formatInvitationsForOrganizer, formatForHome } from "../helpers/format.js";
+import { getQuery } from "../helpers/urlquery.js";
 
 export default () => {
     window.Invitation = class Invitation {
@@ -49,6 +50,20 @@ export default () => {
 
             $('#invitation-list').html(' ');
             $('#no-invitations')[0].style.display = 'flex'
+        }
+
+        static async getForHome () {
+            const response = await fetch('/invitations/get-by-event', {
+                body: {
+                    event_id: getQuery('e')
+                }
+            })
+
+            if (arrayNotEmpty(response.invitations)) {
+                $('#invitation-list').html(formatForHome(response.invitations));
+
+                return
+            }
         }
 
         static async accept (invite_id) {

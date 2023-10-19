@@ -132,6 +132,8 @@ export default () => {
             if (res.song) {
                 $('#song-cover')[0].style.backgroundImage = `url('/assets/uploads/covers/${res.song._album_cover || res.song.cover}')`
                 $('#audio-src')[0].src = `/assets/uploads/songs/${res.song.file}`;
+            
+                $('#song-download-link').attr('href', `/assets/uploads/songs/${res.song.file}`)
             }
         }
 

@@ -58,10 +58,10 @@ export const formatEventsForHome = (events) => {
             <div class="events-container__list__item flex" style="margin-bottom: 1rem;">
                 <div class="events-container__list__item__back image--back" style="background-image: url('/assets/uploads/events/blank-photo.jpg');"></div>
                 <div class="events-container__list__item__details flex flex--j-space-between" style="flex-direction: column;">
-                    <div>
+                    <a href="/event/view?e=${_event.id}">
                         <h4>${_event.name}</h4>
                         <p>${getStaticDate(_event.start_date)}</p>
-                    </div>
+                    </a>
                 </div>
             </div>
         `
@@ -112,6 +112,23 @@ export const formatInvitationsForOrganizer = (invites) => {
     return formated;
 }
 
+export const formatForHome = (invites) => {
+    let formated = '';
+
+    invites.forEach(invite => {
+        formated += `
+            <div class="invite">
+                <div class="invite__profile image--back image--round" style="flex: 0 0 33%;  width: 12rem; height: 12rem;background-image: url('/assets/uploads/profile/default.jpg');"></div>
+                <div class="invite__details">
+                    <h4 style="text-align: center;">${invite.stage_name}</h4>
+                </div>
+            </div>
+        `
+    });
+
+    return formated;
+}
+
 export const formatSongsForArtist = (songs) => {
     let formated = '';
 
@@ -143,7 +160,6 @@ export const formatSongsForHome = (songs) => {
     let formated = '';
 
     songs.forEach(song => {
-        console.log(song);
         formated += `
             <div class="song">
                 <div class="song__background image--back pos--rel" style="background-image: url('/assets/uploads/covers/${song._album_cover || song.cover}');">

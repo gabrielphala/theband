@@ -63,8 +63,6 @@ export default () => {
                 }
             })
 
-            console.log(res);
-
             Invitation.viewInvitationOrg(getQuery('e'))
         }
     }

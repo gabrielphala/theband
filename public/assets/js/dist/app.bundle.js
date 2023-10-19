@@ -205,7 +205,6 @@ __webpack_require__.r(__webpack_exports__);
           event_id: (0,_helpers_urlquery_js__WEBPACK_IMPORTED_MODULE_4__.getQuery)('e')
         }
       });
-      console.log(res);
       Invitation.viewInvitationOrg((0,_helpers_urlquery_js__WEBPACK_IMPORTED_MODULE_4__.getQuery)('e'));
     }
   };
@@ -226,6 +225,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _helpers_array_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../helpers/array.js */ "./public/assets/js/src/helpers/array.js");
 /* harmony import */ var _helpers_fetch_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../helpers/fetch.js */ "./public/assets/js/src/helpers/fetch.js");
 /* harmony import */ var _helpers_format_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../helpers/format.js */ "./public/assets/js/src/helpers/format.js");
+/* harmony import */ var _helpers_urlquery_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../helpers/urlquery.js */ "./public/assets/js/src/helpers/urlquery.js");
+
 
 
 
@@ -262,6 +263,17 @@ __webpack_require__.r(__webpack_exports__);
       }
       $('#invitation-list').html(' ');
       $('#no-invitations')[0].style.display = 'flex';
+    }
+    static async getForHome() {
+      const response = await (0,_helpers_fetch_js__WEBPACK_IMPORTED_MODULE_1__["default"])('/invitations/get-by-event', {
+        body: {
+          event_id: (0,_helpers_urlquery_js__WEBPACK_IMPORTED_MODULE_3__.getQuery)('e')
+        }
+      });
+      if ((0,_helpers_array_js__WEBPACK_IMPORTED_MODULE_0__.arrayNotEmpty)(response.invitations)) {
+        $('#invitation-list').html((0,_helpers_format_js__WEBPACK_IMPORTED_MODULE_2__.formatForHome)(response.invitations));
+        return;
+      }
     }
     static async accept(invite_id) {
       const response = await (0,_helpers_fetch_js__WEBPACK_IMPORTED_MODULE_1__["default"])('/invitation/accept', {
@@ -450,6 +462,7 @@ __webpack_require__.r(__webpack_exports__);
       if (res.song) {
         $('#song-cover')[0].style.backgroundImage = `url('/assets/uploads/covers/${res.song._album_cover || res.song.cover}')`;
         $('#audio-src')[0].src = `/assets/uploads/songs/${res.song.file}`;
+        $('#song-download-link').attr('href', `/assets/uploads/songs/${res.song.file}`);
       }
     }
     static async loadNextSongsToListen() {
@@ -684,6 +697,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   formatArtistSelect: () => (/* binding */ formatArtistSelect),
 /* harmony export */   formatEventsForHome: () => (/* binding */ formatEventsForHome),
 /* harmony export */   formatEventsForOrganizer: () => (/* binding */ formatEventsForOrganizer),
+/* harmony export */   formatForHome: () => (/* binding */ formatForHome),
 /* harmony export */   formatInvitationsForArtists: () => (/* binding */ formatInvitationsForArtists),
 /* harmony export */   formatInvitationsForOrganizer: () => (/* binding */ formatInvitationsForOrganizer),
 /* harmony export */   formatSongsForArtist: () => (/* binding */ formatSongsForArtist),
@@ -743,10 +757,10 @@ const formatEventsForHome = events => {
             <div class="events-container__list__item flex" style="margin-bottom: 1rem;">
                 <div class="events-container__list__item__back image--back" style="background-image: url('/assets/uploads/events/blank-photo.jpg');"></div>
                 <div class="events-container__list__item__details flex flex--j-space-between" style="flex-direction: column;">
-                    <div>
+                    <a href="/event/view?e=${_event.id}">
                         <h4>${_event.name}</h4>
                         <p>${(0,_datetime_js__WEBPACK_IMPORTED_MODULE_0__.getStaticDate)(_event.start_date)}</p>
-                    </div>
+                    </a>
                 </div>
             </div>
         `;
@@ -787,6 +801,20 @@ const formatInvitationsForOrganizer = invites => {
   });
   return formated;
 };
+const formatForHome = invites => {
+  let formated = '';
+  invites.forEach(invite => {
+    formated += `
+            <div class="invite">
+                <div class="invite__profile image--back image--round" style="flex: 0 0 33%;  width: 12rem; height: 12rem;background-image: url('/assets/uploads/profile/default.jpg');"></div>
+                <div class="invite__details">
+                    <h4 style="text-align: center;">${invite.stage_name}</h4>
+                </div>
+            </div>
+        `;
+  });
+  return formated;
+};
 const formatSongsForArtist = songs => {
   let formated = '';
   songs.forEach(song => {
@@ -814,7 +842,6 @@ const formatSongsForArtist = songs => {
 const formatSongsForHome = songs => {
   let formated = '';
   songs.forEach(song => {
-    console.log(song);
     formated += `
             <div class="song">
                 <div class="song__background image--back pos--rel" style="background-image: url('/assets/uploads/covers/${song._album_cover || song.cover}');">

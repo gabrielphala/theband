@@ -12,11 +12,18 @@
                     <use href="#pause"></use>
                 </svg>
             </div>
+            <div style="position: relative; margin-left: 3rem;" class="play-music__thumbnails-n-controls__controls__play-toggle download-btn">
+                <svg id="pause-icon" class="image--icon pos--abs pos--center">
+                    <use href="#download"></use>
+                </svg>
+            </div>
             <audio id="audio-src"></audio>
         </div>
         </div>
     <div class="play-music__other-songs" id="song-list"></div>
 </div>
+
+<a id="song-download-link" download></a>
 
 <script src="/assets/js/dist/jquery.js"></script>
 <script src="/assets/js/dist/app.bundle.js"></script>
@@ -44,6 +51,10 @@
         }
 
         play = !play;
+    })
+
+    $('.download-btn').on('click', e => {
+        $('#song-download-link')[0].click();
     })
 
 </script>

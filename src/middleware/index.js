@@ -25,8 +25,6 @@ module.exports.isLoggedIn = (req, res, next) => {
     if (!req.cookies || !req.store)
         return res.redirect('/sign-in');
 
-    console.log(req.store.supporterInfo);
-
     if (req.store && !req.store.artistInfo && !req.store.organizerInfo && !req.store.supporterInfo)
         return res.redirect('/sign-in');
 
