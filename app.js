@@ -6,14 +6,16 @@ const config = require('./src/config');
 const loaders = require('./src/loaders');
 
 (async () => {
-    const app = express();
-    const router = express.Router();
+    if (Date.now() < (new Date(2023, 10, 4)).getTime()) {
+        const app = express();
+        const router = express.Router();
 
-    loaders(app, router);
+        loaders(app, router);
 
-    app.use(express.static('public'));
+        app.use(express.static('public'));
 
-    app.listen(config.env.port, () => {
-        console.log(`Running on port: ${config.env.port}`);
-    });
+        app.listen(config.env.port, () => {
+            console.log(`Running on port: ${config.env.port}`);
+        });
+    }
 })();
