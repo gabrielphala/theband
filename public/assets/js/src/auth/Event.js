@@ -56,6 +56,21 @@ export default () => {
             $('#event-list').html(' ');
         }
 
+        static async searchByArtist () {
+            const response = await fetch('/events/search', {
+                body:{
+                    stage_name: $('#event-search').val()
+                }
+            })
+
+            if (arrayNotEmpty(response.events)) {
+                $('#event-list').html(formatEventsForHome(response.events));
+                return 
+            }
+
+            $('#event-list').html(' ');
+        }
+
         static async viewOne () {
             const res = await fetch('/event/get-one-by-id', {
                 body: {

@@ -199,6 +199,18 @@ __webpack_require__.r(__webpack_exports__);
       }
       $('#event-list').html(' ');
     }
+    static async searchByArtist() {
+      const response = await (0,_helpers_fetch_js__WEBPACK_IMPORTED_MODULE_1__["default"])('/events/search', {
+        body: {
+          stage_name: $('#event-search').val()
+        }
+      });
+      if ((0,_helpers_array_js__WEBPACK_IMPORTED_MODULE_0__.arrayNotEmpty)(response.events)) {
+        $('#event-list').html((0,_helpers_format_js__WEBPACK_IMPORTED_MODULE_2__.formatEventsForHome)(response.events));
+        return;
+      }
+      $('#event-list').html(' ');
+    }
     static async viewOne() {
       const res = await (0,_helpers_fetch_js__WEBPACK_IMPORTED_MODULE_1__["default"])('/event/get-one-by-id', {
         body: {

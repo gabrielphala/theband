@@ -11,6 +11,11 @@
             <h1 style="font-size: 1.6rem;">Up coming</h1>
             <p>Stay ahead of events</p>
         </div>
+        <div style="padding: 1rem 1.6rem;">
+            <div class="input">
+                <input type="text" id="event-search"  placeholder="Search by artist name">
+            </div>
+        </div>
         <div class="events-container__list" id="event-list">
             
         </div>
@@ -22,4 +27,8 @@
 
 <script>
     Event.getAll()
+
+    $('#event-search').on('keyup', () => {
+        Event.searchByArtist();
+    })
 </script>

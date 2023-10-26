@@ -6,4 +6,5 @@ module.exports = (router) => {
     router.post('/event/get-one-by-id', base_controller.wrap_with_store(EventService.getById));
     router.post('/events/get-ready-by-organizer', base_controller.wrap_with_store(EventService.getReadyByOrganizer));
     router.post('/events/get-all-ready', base_controller.wrap_with_store(EventService.getAll));
+    router.post('/events/search', base_controller.wrap_with_store(EventService.getEventsByArtist));
 };

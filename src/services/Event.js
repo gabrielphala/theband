@@ -1,5 +1,6 @@
 const Event = require("../models/Event");
 const Invitation = require("../models/Invitation");
+const Artist = require("../models/Artist")
 
 const v = require("../helpers/Validation")
 
@@ -20,6 +21,26 @@ module.exports = class EventService {
         try {
             res_wrap.events = await Event.getReadyByOrganizer(organizerInfo.id);
         } catch (e) { throw e; }
+
+        return res_wrap;
+    }
+
+    static async getEventsByArtist (res_wrap, body) {
+        const {stage_name} = body;
+
+        const artists = await Artist.search({
+            condition: {
+                stage_name
+            }
+        });
+
+        const invitations = [];
+
+        for (let i = 0; i < artists.length; i++) {
+            invitations.push(...await Invitation.getArtistInvitation(artists[0].id));
+        }
+
+        res_wrap.events = invitations;
 
         return res_wrap;
     }
