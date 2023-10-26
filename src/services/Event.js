@@ -2,7 +2,8 @@ const Event = require("../models/Event");
 const Invitation = require("../models/Invitation");
 const Artist = require("../models/Artist")
 
-const v = require("../helpers/Validation")
+const v = require("../helpers/Validation");
+const { SQLDate } = require("sqlifier");
 
 module.exports = class EventService {
     static async getIncompleteByOrganizer (organizerId) {
@@ -92,10 +93,36 @@ module.exports = class EventService {
             const used = [];
 
             try {
-                body.artists.forEach(artist => {
+                for (let i = 0; i < body.artists.length; i++) {
+                    const artist = body.artists[i];
+
                     if (artist == 'select') throw 'Please specify artist';
 
                     if (used.includes(artist)) return;
+
+                    let date = new Date(body.end_date);
+                    date.setHours(date.getHours() - 3)
+
+                    const events = await Event.find({
+                        condition: {
+                            end_date: { $gt: SQLDate.toSQLDatetime(date) }
+                        }
+                    })
+
+                    for (let j = 0; j < events.length; j++) {
+                        const eventDetails = events[j];
+
+                        const invitation = await Invitation.findOne({
+                            condition: { artist_id: artist, event_id: eventDetails.id },
+                            join: {
+                                ref: 'artist',
+                                id: 'artist_id'
+                            }
+                        })
+
+                        if (invitation)
+                            throw `The artist: ${invitation.stage_name} is already invited to: ${eventDetails.name} at this time`;
+                    }
 
                     Invitation.insert({
                         organizer_id: organizerInfo.id,
@@ -104,7 +131,7 @@ module.exports = class EventService {
                     })
 
                     used.push(artist);
-                });
+                }
             } catch (e) { throw e; }
 
             eventInfo.save();

@@ -1,5 +1,6 @@
 import { arrayNotEmpty } from "../helpers/array.js";
 import fetch from "../helpers/fetch.js"
+import { showError } from "../helpers/error.js"
 
 import { formatArtistSelect, formatEventsForOrganizer, formatEventsForHome } from "../helpers/format.js";
 import { closeModal } from "../helpers/modal";
@@ -26,8 +27,10 @@ export default () => {
             if (res.successful) {
                 Event.getAllByOrganizer();
                 
-                closeModal('new-event')
+                return closeModal('new-event')
             }
+
+            showError('event-error', res.error)
         }
 
         static async getAllByOrganizer () {
