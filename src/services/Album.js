@@ -16,7 +16,7 @@ module.exports = class AlbumService {
 
     static async addAlbumName (res_wrap, body, { artistInfo }) {
         try {
-            let albumInfo = await Album.getIncompleteByArtist(artistInfo.id);
+            let albumInfo = await AlbumService.getIncompleteByArtist(artistInfo.id);
 
             albumInfo.name = body.name;
             albumInfo.is_ready = true;

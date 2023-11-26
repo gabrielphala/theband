@@ -80,9 +80,6 @@ module.exports = class EventService {
                 'Name': { value: body.name, min: 2, max: 30 }
             });
 
-            if (body.start_date == '') throw 'Please select a start date';
-            if (body.end_date == '') throw 'Please select an end date';
-
             const eventInfo = await EventService.getIncompleteByOrganizer(organizerInfo.id)
 
             eventInfo.is_ready = true;
@@ -90,47 +87,60 @@ module.exports = class EventService {
             eventInfo.start_date = body.start_date;
             eventInfo.end_date = body.end_date;
 
+            if (body.start_date == '') throw 'Please select a start date';
+            if (body.end_date == '') throw 'Please select an end date';
+
             const used = [];
 
             try {
-                for (let i = 0; i < body.artists.length; i++) {
-                    const artist = body.artists[i];
+                for (let i = 0; i < body.invites.length; i++) {
+                    const { artist_id, start_date, end_date } = body.invites[i];
 
-                    if (artist == 'select') throw 'Please specify artist';
+                    if (artist_id == 'select') throw 'Please specify artist';
 
-                    if (used.includes(artist)) return;
+                    if (start_date == '') throw 'Please select a start date';
+                    if (end_date == '') throw 'Please select an end date';
 
-                    let date = new Date(body.end_date);
-                    date.setHours(date.getHours() - 3)
+                    if (used.includes(artist_id)) continue;
 
-                    const events = await Event.find({
-                        condition: {
-                            end_date: { $gt: SQLDate.toSQLDatetime(date) }
-                        }
-                    })
+                    let _start_date = new Date(start_date);
+                    _start_date.setHours(_start_date.getHours() - 2)
 
-                    for (let j = 0; j < events.length; j++) {
-                        const eventDetails = events[j];
+                    let _end_date = new Date(end_date);
+                    _end_date.setHours(_end_date.getHours() + 2)
 
-                        const invitation = await Invitation.findOne({
-                            condition: { artist_id: artist, event_id: eventDetails.id },
-                            join: {
+                    const invite = await Invitation.findOne({
+                        condition: [
+                            {
+                                artist_id,
+                                start_date: { $lt:  SQLDate.toSQLDatetime(new Date()) },
+                                end_date: { $gt: SQLDate.toSQLDatetime(_start_date) }
+                            }
+                        ],
+                        join: [
+                            {
                                 ref: 'artist',
                                 id: 'artist_id'
+                            },
+                            {
+                                ref: 'event',
+                                id: 'event_id'
                             }
-                        })
+                        ]
+                    })
 
-                        if (invitation)
-                            throw `The artist: ${invitation.stage_name} is already invited to: ${eventDetails.name} at this time`;
-                    }
+                    if (invite)
+                        throw `The artist: ${invite.stage_name} is already invited to: ${invite.name} at this time`;
 
                     Invitation.insert({
                         organizer_id: organizerInfo.id,
-                        artist_id: artist,
-                        event_id: eventInfo.id
+                        artist_id: artist_id,
+                        event_id: eventInfo.id,
+                        start_date,
+                        end_date
                     })
 
-                    used.push(artist);
+                    used.push(artist_id);
                 }
             } catch (e) { throw e; }
 

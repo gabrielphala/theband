@@ -43,7 +43,7 @@ module.exports = class ArtistService {
                 'Password': { value: body.password, min: 8, max: 30 }
             });
 
-            const supporterDetails = await Supporter.findOne({ condition: { email: body.email } });
+            const supporterDetails = await Supporter.findOne({ condition: { email: body.email, isDeleted: false } });
 
             if (!supporterDetails) throw 'Password or email address is incorrect';
 
@@ -64,6 +64,18 @@ module.exports = class ArtistService {
     static async getAll (res_wrap, _) {
         try {
             res_wrap.artists = await Artist.getAll();
+        } catch (e) { throw e; }
+
+        return res_wrap;
+    }
+
+    static async deleteAccount (res_wrap, body, { supporterInfo }) {
+        try {
+            const supporterDetails = await Supporter.findOne({ condition: { id: supporterInfo.id } });
+
+            supporterDetails.isDeleted = true;
+
+            supporterDetails.save();
         } catch (e) { throw e; }
 
         return res_wrap;

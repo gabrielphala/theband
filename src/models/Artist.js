@@ -8,7 +8,8 @@ module.exports = new (class Artist extends SQLifier {
             id: { type: 'int', isAutoIncrement: true, isPrimary: true },
             stage_name: { type: 'varchar', length: 15 },
             email: { type: 'varchar', length: 30 },
-            password: { type: 'varchar', length: 250 }
+            password: { type: 'varchar', length: 250 },
+            isDeleted: { type: 'boolean', default: false }
         })
     }
 

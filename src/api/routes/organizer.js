@@ -17,4 +17,5 @@ module.exports = (router) => {
 
     router.post('/organizer/sign-up', base_controller.wrap(OrganizerService.signUp));
     router.post('/organizer/sign-in', base_controller.wrap(OrganizerService.signIn));
+    router.get('/organizer/delete', OrganizerService.deleteAccount, (req, res) => res.redirect('/organizer/sign-in'));
 };

@@ -9,7 +9,8 @@ module.exports = new (class Organizer extends SQLifier {
             firstname: { type: 'varchar', length: 30 },
             lastname: { type: 'varchar', length: 30 },
             email: { type: 'varchar', length: 30 },
-            password: { type: 'varchar', length: 250 }
+            password: { type: 'varchar', length: 250 },
+            isDeleted: { type: 'boolean', default: false }
         })
     }
 })

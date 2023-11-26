@@ -9,10 +9,14 @@ import { getQuery } from "../helpers/urlquery.js";
 export default () => {
     window.Event = class Event {
         static async addDetails () {
-            const artists = [];
+            const invites = [];
 
-            Array.from($('.artists__item')).forEach(artist => {
-                artists.push(artist.value)
+            Array.from($('.artists__item')).forEach((artist, index) => {
+                invites.push({
+                    artist_id: artist.value,
+                    start_date: $(`#start-date-${index + 1}`).val(),
+                    end_date: $(`#end-date-${index + 1}`).val(),
+                })
             })
 
             const res = await fetch('/event/add-details', {
@@ -20,7 +24,7 @@ export default () => {
                     name: $('#event-name').val(),
                     start_date: $('#start-date').val(),
                     end_date: $('#end-date').val(),
-                    artists
+                    invites
                 }
             })
 

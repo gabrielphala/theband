@@ -10,6 +10,16 @@ export const createArtistItem = () => {
                     <use href="#cancel"></use>
                 </svg>
             </div>
+            <div class="flex flex--j-space-between" style="margin-top: 1rem;">
+                <div class="input" style="flex: 0 0 49%;">
+                    <label>Start date</label>
+                    <input type="datetime-local" id="start-date-${artistCount}">
+                </div>
+                <div class="input" style="flex: 0 0 49%;">
+                    <label>End date</label>
+                    <input type="datetime-local" id="end-date-${artistCount}">
+                </div>
+            </div>
         </div>
     `
 
@@ -48,6 +58,12 @@ const rename = (itemId, artistCount) => {
 
         const deleteBtn = $(`#delete-item-${oldId}`);
         deleteBtn[0].id = `delete-item-${currentId}`;
+
+        const startDate = $(`#start-date-${oldId}`);
+        startDate[0].id = `start-date-${currentId}`;
+
+        const endDate = $(`#end-date-${oldId}`);
+        endDate[0].id = `end-date-${currentId}`;
 
         // remove previous event, because it points to an old id
         deleteBtn.off('click');

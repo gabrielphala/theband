@@ -7,4 +7,6 @@ module.exports = (router) => {
 
     router.post('/supporter/sign-up', base_controller.wrap(SupporterService.signUp));
     router.post('/supporter/sign-in', base_controller.wrap(SupporterService.signIn));
+
+    router.get('/supporter/delete', base_controller.wrap_with_store(SupporterService.deleteAccount), (req, res) => res.redirect('/supporter/sign-in'));
 };

@@ -8,6 +8,8 @@ module.exports = new (class Invitation extends SQLifier {
             id: { type: 'int', isAutoIncrement: true, isPrimary: true },
             organizer_id: { type: 'int', ref: 'organizer' },
             artist_id: { type: 'int', ref: 'artist' },
+            start_date: { type: 'datetime' },
+            end_date: { type: 'datetime' },
             event_id: { type: 'int', ref: 'event' },
             status: { type: 'varchar', length: 10, default: 'pending' }
         })

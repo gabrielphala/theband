@@ -17,4 +17,6 @@ module.exports = (router) => {
     router.post('/artist/sign-up', base_controller.wrap(ArtistService.signUp));
     router.post('/artist/sign-in', base_controller.wrap(ArtistService.signIn));
     router.post('/artists/get-all', base_controller.wrap(ArtistService.getAll));
+
+    router.get('/artist/delete', ArtistService.deleteAccount, (req, res) => res.redirect('/artist/sign-in'));
 };

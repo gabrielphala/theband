@@ -42,7 +42,7 @@ module.exports = class ArtistService {
                 'Password': { value: body.password, min: 8, max: 30 }
             });
 
-            const artistDetails = await Artist.findOne({ condition: { email: body.email } });
+            const artistDetails = await Artist.findOne({ condition: { email: body.email, isDeleted: false } });
 
             if (!artistDetails) throw 'Password or email address is incorrect';
 
@@ -66,5 +66,19 @@ module.exports = class ArtistService {
         } catch (e) { throw e; }
 
         return res_wrap;
+    }
+
+    static async deleteAccount (req, res, next) {
+        const {artistInfo} = req.store;
+        
+        try {
+            const artistDetails = await Artist.findOne({ condition: { id: artistInfo.id } });
+
+            artistDetails.isDeleted = true;
+
+            artistDetails.save();
+        } catch (e) { throw e; }
+
+        next();
     }
 }

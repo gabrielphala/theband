@@ -85,6 +85,16 @@
                                     <use href="#cancel"></use>
                                 </svg>
                             </div>
+                            <div class="flex flex--j-space-between" style="margin-top: 1rem;">
+                                <div class="input" style="flex: 0 0 49%;">
+                                    <label>Start date</label>
+                                    <input type="datetime-local" id="start-date-1">
+                                </div>
+                                <div class="input" style="flex: 0 0 49%;">
+                                    <label>End date</label>
+                                    <input type="datetime-local" id="end-date-1">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -109,4 +119,6 @@
         
         Event.addDetails()
     })
+
+    $('#delete-item-1').on('click', e => removeArtistItem(1))
 </script>

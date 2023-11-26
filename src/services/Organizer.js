@@ -43,7 +43,10 @@ module.exports = class OrganizerService {
                 'Password': { value: body.password, min: 8, max: 30 }
             });
 
-            const organizerDetails = await Organizer.findOne({ condition: { email: body.email } });
+            const organizerDetails = await Organizer.findOne({ condition: { email: body.email, isDeleted: false } });
+
+            if (!organizerDetails)
+                throw 'Password or email address is incorrect';
 
             if (!(await isSame(organizerDetails.password, body.password)))
                 throw 'Password or email address is incorrect';
@@ -57,5 +60,19 @@ module.exports = class OrganizerService {
         } catch (e) { throw e; }
 
         return res_wrap;
+    }
+
+    static async deleteAccount (req, res, next) {
+        const { organizerInfo } = req.store;
+
+        try {
+            const organizerDetails = await Organizer.findOne({ condition: { id: organizerInfo.id } });
+
+            organizerDetails.isDeleted = true;
+
+            organizerDetails.save();
+        } catch (e) { throw e; }
+
+        next()
     }
 }
