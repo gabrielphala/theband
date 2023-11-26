@@ -24,6 +24,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+let artistAlbums = [];
+let tableHeader = ['#', 'Album name', 'Album cover'];
+let allowedColumns = ['name', 'cover'];
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (() => {
   window.Album = class Album {
     static async addAlbumCover() {
@@ -71,6 +74,7 @@ __webpack_require__.r(__webpack_exports__);
       if ((0,_helpers_array__WEBPACK_IMPORTED_MODULE_2__.arrayNotEmpty)(res.albums)) {
         $('#no-albums').hide();
         $('#album-list').html((0,_helpers_format__WEBPACK_IMPORTED_MODULE_3__.formatAlbumsForArtist)(res.albums));
+        artistAlbums = res.albums;
         $('.container__main__center__covers__item__back__del').on('click', e => {
           const set = e.currentTarget.dataset;
           Album.removeAlbum(set.albumid);
@@ -86,6 +90,21 @@ __webpack_require__.r(__webpack_exports__);
       }
       $('#album-list').html(' ');
       $('#no-albums')[0].style.display = 'flex';
+    }
+    static async downloadCSV() {
+      const response = await (0,_helpers_fetch__WEBPACK_IMPORTED_MODULE_0__["default"])('/download/csv', {
+        body: {
+          data: artistAlbums,
+          tableHeader,
+          allowedColumns,
+          reportName: 'Artist_Albums'
+        }
+      });
+      if (response.successful) {
+        const anchor = $('#download-anchor');
+        anchor.attr('href', `/assets/downloads/tmp/${response.filename}`);
+        anchor[0].click();
+      }
     }
   };
 });
@@ -245,12 +264,16 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+let tableHeader = ['#', 'Event name', 'Event start', 'Event end', 'Invitation status'];
+let allowedColumns = ['name', 'start_date', 'end_date', 'status'];
+let artistInvitations = [];
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (() => {
   window.Invitation = class Invitation {
     static async getAllByArtists() {
       const response = await (0,_helpers_fetch_js__WEBPACK_IMPORTED_MODULE_1__["default"])('/invitations/get-by-artist');
       if ((0,_helpers_array_js__WEBPACK_IMPORTED_MODULE_0__.arrayNotEmpty)(response.invitations)) {
         $('#no-events')[0].style.display = 'none';
+        artistInvitations = response.invitations;
         $('#event-list').html((0,_helpers_format_js__WEBPACK_IMPORTED_MODULE_2__.formatInvitationsForArtists)(response.invitations));
         $('#accept-invite').on('click', e => {
           const set = e.currentTarget.parentElement.dataset;
@@ -305,6 +328,21 @@ __webpack_require__.r(__webpack_exports__);
         }
       });
       Invitation.getAllByArtists();
+    }
+    static async downloadCSV() {
+      const response = await (0,_helpers_fetch_js__WEBPACK_IMPORTED_MODULE_1__["default"])('/download/csv', {
+        body: {
+          data: artistInvitations,
+          tableHeader,
+          allowedColumns,
+          reportName: 'Invitations'
+        }
+      });
+      if (response.successful) {
+        const anchor = $('#download-anchor');
+        anchor.attr('href', `/assets/downloads/tmp/${response.filename}`);
+        anchor[0].click();
+      }
     }
   };
 });
@@ -383,6 +421,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+let artistSongs = [];
+let tableHeader = ['#', 'Song name', 'Song cover', 'Album name'];
+let allowedColumns = ['name', 'cover', '_album_name'];
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (() => {
   window.Song = class Song {
     static async addSongCover() {
@@ -447,6 +488,7 @@ __webpack_require__.r(__webpack_exports__);
       if ((0,_helpers_array__WEBPACK_IMPORTED_MODULE_3__.arrayNotEmpty)(res.songs)) {
         $('#no-songs').hide();
         $('#single-list').html((0,_helpers_format__WEBPACK_IMPORTED_MODULE_2__.formatSongsForArtist)(res.songs));
+        artistSongs = res.songs;
         $('.container__main__center__covers__item__back__del').on('click', e => {
           const set = e.currentTarget.dataset;
           Song.removeSong(set.songid);
@@ -483,6 +525,29 @@ __webpack_require__.r(__webpack_exports__);
     static async loadNextSongsToListen() {
       const res = await (0,_helpers_fetch__WEBPACK_IMPORTED_MODULE_0__["default"])('/songs/get-all-ready');
       $('#song-list').html((0,_helpers_format__WEBPACK_IMPORTED_MODULE_2__.formatSongsForNext)(res.songs));
+    }
+    static async loadAlbumSongsToListen() {
+      const res = await (0,_helpers_fetch__WEBPACK_IMPORTED_MODULE_0__["default"])('/songs/get-from-album', {
+        body: {
+          song_id: (0,_helpers_urlquery_js__WEBPACK_IMPORTED_MODULE_4__.getQuery)('s')
+        }
+      });
+      $('#album-song-list').html((0,_helpers_format__WEBPACK_IMPORTED_MODULE_2__.formatSongsForNext)(res.songs));
+    }
+    static async downloadCSV() {
+      const response = await (0,_helpers_fetch__WEBPACK_IMPORTED_MODULE_0__["default"])('/download/csv', {
+        body: {
+          data: artistSongs,
+          tableHeader,
+          allowedColumns,
+          reportName: 'Artist_Songs'
+        }
+      });
+      if (response.successful) {
+        const anchor = $('#download-anchor');
+        anchor.attr('href', `/assets/downloads/tmp/${response.filename}`);
+        anchor[0].click();
+      }
     }
   };
 });
@@ -880,13 +945,13 @@ const formatSongsForNext = songs => {
   let formated = '';
   songs.forEach(song => {
     formated += `
-            <a href="/listen?s=${song.id}" class="play-music__other-songs__item flex">
-                <div class="pos--rel play-music__other-songs__item__thumbnail image--back" style="background-image: url('/assets/uploads/covers/${song._album_cover || song.cover}')">
+            <a href="/listen?s=${song.id}" class="song flex">
+                <div class="pos--rel song__thumbnail image--back" style="background-image: url('/assets/uploads/covers/${song._album_cover || song.cover}')">
                     <svg class="image--icon pos--abs pos--center">
                         <use href="#play"></use>
                     </svg>
                 </div>
-                <div class="play-music__other-songs__item__details">
+                <div class="song__details">
                     <h4>${song.name} | ${song.album_id ? song._album_name : 'Single'}</h4>
                     <p>${song.stage_name}</p>
                 </div>

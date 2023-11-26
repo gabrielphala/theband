@@ -1,6 +1,8 @@
 const { isLoggedIn } = require('../../middleware');
 const base_controller = require('../controllers/base');
 
+const DownloadService = require("../../services/Download");
+
 module.exports = (router) => {
     router.get('/', base_controller.render('base/home', 'Where music lives'));
     router.get('/events', isLoggedIn, base_controller.render('base/events', 'Check up on events'));
@@ -14,4 +16,6 @@ module.exports = (router) => {
 
         res.redirect('/')
     });
+
+    router.post('/download/csv', base_controller.wrap(DownloadService.download))
 };

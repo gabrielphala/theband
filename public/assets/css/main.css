@@ -612,25 +612,29 @@ li {
   background-color: #ffcaca;
   border-radius: 50%;
 }
-.play-music__other-songs {
+.play-music__more-songs {
   flex: 0 0 40%;
+}
+.play-music__more-songs__from-album,
+.play-music__more-songs__others {
   border-radius: 6px;
   overflow: hidden;
   border: 1px solid #eee;
+  margin-bottom: 2rem;
   padding: 1rem;
 }
-.play-music__other-songs__item:not(:last-child) {
+.play-music__more-songs .song:not(:last-child) {
   margin-bottom: 1rem;
   padding-bottom: 1rem;
   border-bottom: 1px solid #eee;
 }
-.play-music__other-songs__item__thumbnail {
+.play-music__more-songs .song__thumbnail {
   flex: 0 0 5rem;
   height: 5rem;
   margin-right: 1rem;
   border-radius: 4px;
 }
-.play-music__other-songs__item__details {
+.play-music__more-songs .song__details {
   flex: 1;
 }
 .events-container {

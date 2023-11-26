@@ -14,7 +14,8 @@
             <p>Life of a party</p>
         </div>
         <div class="container__main__center">
-            <div class="card">
+            <p style="cursor: pointer;" id="download-csv">Export to CSV</p>
+            <div class="card" style="margin-top: 1rem;">
                 <div class="card__header card__header--no-border">
                     <h1 style="font-size: 1.6rem;">You're invited</h1>
                     <p>Life of a party</p>
@@ -33,9 +34,15 @@
     </div>
 </div>
 
+<a download id="download-anchor"></a>
+
 <script src="/assets/js/dist/jquery.js"></script>
 <script src="/assets/js/dist/app.bundle.js"></script>
 
 <script>
     Invitation.getAllByArtists();
+
+    $('#download-csv').on('click', e => {
+        Invitation.downloadCSV();
+    })
 </script>

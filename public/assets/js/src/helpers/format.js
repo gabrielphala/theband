@@ -186,13 +186,13 @@ export const formatSongsForNext = (songs) => {
 
     songs.forEach(song => {
         formated += `
-            <a href="/listen?s=${song.id}" class="play-music__other-songs__item flex">
-                <div class="pos--rel play-music__other-songs__item__thumbnail image--back" style="background-image: url('/assets/uploads/covers/${song._album_cover || song.cover}')">
+            <a href="/listen?s=${song.id}" class="song flex">
+                <div class="pos--rel song__thumbnail image--back" style="background-image: url('/assets/uploads/covers/${song._album_cover || song.cover}')">
                     <svg class="image--icon pos--abs pos--center">
                         <use href="#play"></use>
                     </svg>
                 </div>
-                <div class="play-music__other-songs__item__details">
+                <div class="song__details">
                     <h4>${song.name} | ${song.album_id ? song._album_name : 'Single'}</h4>
                     <p>${song.stage_name}</p>
                 </div>

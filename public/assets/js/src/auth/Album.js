@@ -6,6 +6,16 @@ import { arrayNotEmpty } from "../helpers/array";
 import { formatAlbumsForArtist } from "../helpers/format";
 import { showError } from "../helpers/error";
 
+let artistAlbums = []
+
+let tableHeader = [
+    '#', 'Album name', 'Album cover'
+]
+
+let allowedColumns = [
+    'name', 'cover'
+]
+
 export default () => {
     window.Album = class Album {
         static async addAlbumCover () {
@@ -70,6 +80,8 @@ export default () => {
                 $('#no-albums').hide();
                 $('#album-list').html(formatAlbumsForArtist(res.albums))
 
+                artistAlbums = res.albums;
+
                 $('.container__main__center__covers__item__back__del').on('click', e => {
                     const set = e.currentTarget.dataset;
 
@@ -91,6 +103,25 @@ export default () => {
 
             $('#album-list').html(' ')
             $('#no-albums')[0].style.display = 'flex';
+        }
+
+        static async downloadCSV () {
+            const response = await fetch('/download/csv', {
+                body: {
+                    data: artistAlbums,
+                    tableHeader,
+                    allowedColumns,
+                    reportName: 'Artist_Albums'
+                }
+            });
+
+            if (response.successful) {
+                const anchor = $('#download-anchor')
+
+                anchor.attr('href', `/assets/downloads/tmp/${response.filename}`)
+
+                anchor[0].click();
+            }
         }
     }
 }

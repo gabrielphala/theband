@@ -4,6 +4,16 @@ import fetch from "../helpers/fetch.js"
 import { formatInvitationsForArtists, formatInvitationsForOrganizer, formatForHome } from "../helpers/format.js";
 import { getQuery } from "../helpers/urlquery.js";
 
+let tableHeader = [
+    '#', 'Event name', 'Event start', 'Event end', 'Invitation status'
+]
+
+let allowedColumns = [
+    'name', 'start_date', 'end_date', 'status'
+]
+
+let artistInvitations = [];
+
 export default () => {
     window.Invitation = class Invitation {
         static async getAllByArtists () {
@@ -11,6 +21,8 @@ export default () => {
 
             if (arrayNotEmpty(response.invitations)) {
                 $('#no-events')[0].style.display = 'none'
+
+                artistInvitations = response.invitations;
 
                 $('#event-list').html(formatInvitationsForArtists(response.invitations));
 
@@ -84,6 +96,25 @@ export default () => {
             })
 
             Invitation.getAllByArtists()
+        }
+
+        static async downloadCSV () {
+            const response = await fetch('/download/csv', {
+                body: {
+                    data: artistInvitations,
+                    tableHeader,
+                    allowedColumns,
+                    reportName: 'Invitations'
+                }
+            });
+
+            if (response.successful) {
+                const anchor = $('#download-anchor')
+
+                anchor.attr('href', `/assets/downloads/tmp/${response.filename}`)
+
+                anchor[0].click();
+            }
         }
     }
 }

@@ -19,8 +19,13 @@
             </div>
             <audio id="audio-src"></audio>
         </div>
-        </div>
-    <div class="play-music__other-songs" id="song-list"></div>
+    </div>
+    <div class="play-music__more-songs">
+        <p style="color: #c1c1c1;">From album</p>
+        <div class="play-music__more-songs__from-album" id="album-song-list"></div>
+        <p style="color: #c1c1c1;">Others</p>
+        <div class="play-music__more-songs__others" id="song-list"></div>
+    </div>
 </div>
 
 <a id="song-download-link" download></a>
@@ -30,6 +35,7 @@
 <script>
     Song.loadSongToListen()
     Song.loadNextSongsToListen()
+    Song.loadAlbumSongsToListen()
 
     let play = false;
 

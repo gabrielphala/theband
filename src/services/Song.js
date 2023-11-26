@@ -95,6 +95,45 @@ module.exports = class SongService {
         return res_wrap;
     }
 
+    static async getSongsFromAlbum (res_wrap, body) {
+        try {
+            const { song_id } = body;
+
+            res_wrap.songs = []
+
+            const songDetails = await Song.findOne({
+                condition: {
+                    id: song_id
+                }
+            })
+
+            if (!songDetails) return res_wrap;
+
+            res_wrap.songs = await Song.find({
+                condition: {
+                    album_id: songDetails.album_id
+                },
+                join: [
+                    {
+                        kind: 'left',
+                        ref: 'album',
+                        id: 'album_id'
+                    },
+                    {
+                        kind: 'left',
+                        ref: 'artist',
+                        id: 'artist_id'
+                    }
+                ]
+            })
+
+            res_wrap.successful = true;
+
+        } catch (e) { throw e; }
+
+        return res_wrap;
+    }
+
     static async getSongById (res_wrap, body) {
         try {
             const { song_id } = body;

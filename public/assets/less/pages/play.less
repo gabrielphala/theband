@@ -27,14 +27,18 @@
         }
     }
 
-    &__other-songs {
+    &__more-songs {
         flex: 0 0 40%;
-        border-radius: 6px;
-        overflow: hidden;
-        border: 1px solid #eee;
-        padding: 1rem;
+        
+        &__from-album, &__others{
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid #eee;
+            margin-bottom: 2rem;
+            padding: 1rem;
+        }
 
-        &__item{
+        .song {
             &:not(:last-child){
                 margin-bottom: 1rem;
                 padding-bottom: 1rem;

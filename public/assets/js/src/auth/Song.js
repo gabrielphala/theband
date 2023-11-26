@@ -7,6 +7,16 @@ import { arrayNotEmpty } from "../helpers/array";
 import { getQuery } from "../helpers/urlquery.js";
 import { showError } from "../helpers/error";
 
+let artistSongs = []
+
+let tableHeader = [
+    '#', 'Song name', 'Song cover', 'Album name'
+]
+
+let allowedColumns = [
+    'name', 'cover', '_album_name'
+]
+
 export default () => {
     window.Song = class Song {
         static async addSongCover () {
@@ -93,6 +103,8 @@ export default () => {
                 $('#no-songs').hide()
                 $('#single-list').html(formatSongsForArtist(res.songs))
 
+                artistSongs = res.songs;
+
                 $('.container__main__center__covers__item__back__del').on('click', e => {
                     const set = e.currentTarget.dataset;
 
@@ -141,6 +153,35 @@ export default () => {
              const res = await fetch('/songs/get-all-ready')
 
             $('#song-list').html(formatSongsForNext(res.songs))
+        }
+
+        static async loadAlbumSongsToListen () {
+             const res = await fetch('/songs/get-from-album', {
+                body: {
+                    song_id: getQuery('s')
+                }
+             })
+
+            $('#album-song-list').html(formatSongsForNext(res.songs))
+        }
+
+        static async downloadCSV () {
+            const response = await fetch('/download/csv', {
+                body: {
+                    data: artistSongs,
+                    tableHeader,
+                    allowedColumns,
+                    reportName: 'Artist_Songs'
+                }
+            });
+
+            if (response.successful) {
+                const anchor = $('#download-anchor')
+
+                anchor.attr('href', `/assets/downloads/tmp/${response.filename}`)
+
+                anchor[0].click();
+            }
         }
     }
 }
