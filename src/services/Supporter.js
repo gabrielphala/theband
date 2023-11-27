@@ -43,7 +43,7 @@ module.exports = class ArtistService {
                 'Password': { value: body.password, min: 8, max: 30 }
             });
 
-            const supporterDetails = await Supporter.findOne({ condition: { email: body.email, isDeleted: false } });
+            const supporterDetails = await Supporter.findOne({ condition: { email: body.email } });
 
             if (!supporterDetails) throw 'Password or email address is incorrect';
 
