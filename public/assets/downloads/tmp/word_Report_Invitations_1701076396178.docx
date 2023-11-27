@@ -1,0 +1,6 @@
+<h1>Report</h1>
+<h4>Invitations report</h4>
+
+#,Event name,Event start,Event end,Invitation status
+
+1,Stage one,2023-11-26T18:49:00.000Z,2023-11-26T20:49:00.000Z,pending,

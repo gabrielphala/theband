@@ -15,6 +15,8 @@
         </div>
         <div class="container__main__center">
             <p style="cursor: pointer;" id="download-csv">Export to CSV</p>
+            <p style="cursor: pointer; margin-bottom: 1rem;" id="download-word">Export to Word</p>
+            
             <div class="card" style="margin-top: 1rem;">
                 <div class="card__header card__header--no-border">
                     <h1 style="font-size: 1.6rem;">You're invited</h1>
@@ -44,5 +46,9 @@
 
     $('#download-csv').on('click', e => {
         Invitation.downloadCSV();
+    })
+
+    $('#download-word').on('click', e => {
+        Invitation.downloadWord();
     })
 </script>

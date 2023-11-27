@@ -21,6 +21,7 @@
         </div>
         <div class="container__main__center">
             <p style="cursor: pointer;" id="download-csv">Export to CSV</p>
+            <p style="cursor: pointer; margin-bottom: 2rem;" id="download-word">Export to Word</p>
 
             <div class="container__main__center__covers" id="single-list"> </div>
             <div class="container__main__center__covers" id="album-list" style="display: none;"></div>
@@ -206,5 +207,10 @@
     $('#download-csv').on('click', e => {
         if (getQuery('tab') == 'albums') Album.downloadCSV();
         else Song.downloadCSV();
+    })
+
+    $('#download-word').on('click', e => {
+        if (getQuery('tab') == 'albums') Album.downloadWord();
+        else Song.downloadWord();
     })
 </script>

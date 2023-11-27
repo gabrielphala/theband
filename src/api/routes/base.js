@@ -18,4 +18,5 @@ module.exports = (router) => {
     });
 
     router.post('/download/csv', base_controller.wrap(DownloadService.download))
+    router.post('/download/word', base_controller.wrap(DownloadService.downloadWord))
 };

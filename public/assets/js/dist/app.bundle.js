@@ -106,6 +106,21 @@ let allowedColumns = ['name', 'cover'];
         anchor[0].click();
       }
     }
+    static async downloadWord() {
+      const response = await (0,_helpers_fetch__WEBPACK_IMPORTED_MODULE_0__["default"])('/download/word', {
+        body: {
+          data: artistAlbums,
+          tableHeader,
+          allowedColumns,
+          reportName: 'Artist Albums'
+        }
+      });
+      if (response.successful) {
+        const anchor = $('#download-anchor');
+        anchor.attr('href', `/assets/downloads/tmp/${response.filename}`);
+        anchor[0].click();
+      }
+    }
   };
 });
 
@@ -348,6 +363,21 @@ let artistInvitations = [];
         anchor[0].click();
       }
     }
+    static async downloadWord() {
+      const response = await (0,_helpers_fetch_js__WEBPACK_IMPORTED_MODULE_1__["default"])('/download/word', {
+        body: {
+          data: artistInvitations,
+          tableHeader,
+          allowedColumns,
+          reportName: 'Invitations'
+        }
+      });
+      if (response.successful) {
+        const anchor = $('#download-anchor');
+        anchor.attr('href', `/assets/downloads/tmp/${response.filename}`);
+        anchor[0].click();
+      }
+    }
   };
 });
 
@@ -545,6 +575,21 @@ let allowedColumns = ['name', 'cover', '_album_name'];
           tableHeader,
           allowedColumns,
           reportName: 'Artist_Songs'
+        }
+      });
+      if (response.successful) {
+        const anchor = $('#download-anchor');
+        anchor.attr('href', `/assets/downloads/tmp/${response.filename}`);
+        anchor[0].click();
+      }
+    }
+    static async downloadWord() {
+      const response = await (0,_helpers_fetch__WEBPACK_IMPORTED_MODULE_0__["default"])('/download/word', {
+        body: {
+          data: artistSongs,
+          tableHeader,
+          allowedColumns,
+          reportName: 'Artist Songs'
         }
       });
       if (response.successful) {

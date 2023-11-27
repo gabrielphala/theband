@@ -27,4 +27,30 @@ module.exports = class DownloadService {
             return wrap_res;
         } catch (e) { throw e; }
     }
+
+    static async downloadWord (wrap_res, body) {
+        try {
+            const html = await ejs.renderFile(
+                path.join(__dirname, '../views/documents/word.ejs'), {
+                data: body.data,
+                tableHeader: body.tableHeader,
+                allowedColumns: body.allowedColumns,
+                name: body.reportName 
+            });
+
+            const filename = `word_Report_${body.reportName || 'basic'}_${Date.now()}.docx`;
+
+            const filePath = path.join(
+                __dirname,
+                `../../public/assets/downloads/tmp/`
+            );
+
+            fs.writeFileSync(filePath + filename, html.trimStart())
+
+            wrap_res.filename = filename;
+            wrap_res.successful = true;
+
+            return wrap_res;
+        } catch (e) { throw e; }
+    }
 }

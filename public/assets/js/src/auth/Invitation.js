@@ -116,5 +116,24 @@ export default () => {
                 anchor[0].click();
             }
         }
+
+        static async downloadWord () {
+            const response = await fetch('/download/word', {
+                body: {
+                    data: artistInvitations,
+                    tableHeader,
+                    allowedColumns,
+                    reportName: 'Invitations'
+                }
+            });
+
+            if (response.successful) {
+                const anchor = $('#download-anchor')
+
+                anchor.attr('href', `/assets/downloads/tmp/${response.filename}`)
+
+                anchor[0].click();
+            }
+        }
     }
 }
