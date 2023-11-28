@@ -55,12 +55,20 @@
             
             <div class="flex">
                 <div style="flex: 0 15rem; margin-right: 2rem;">
-                    <div class="image--back" style="border-radius: 6px; height: 18rem; background-image: url('/assets/uploads/events/blank-photo.jpg');"></div>
-                    <label for="" style="text-align: center; margin-top: 1rem; display: block;">Change</label>
+                    <div class="image-upload-preview">
+                        <div class="image--back" id="cover-preview" style="border-radius: 6px; height: 18rem; background-image: url('/assets/uploads/events/blank-photo.jpg');"></div>
+                        <p class="pos--abs pos--center" id="cover-progress">0.0% Complete</p>
+                    </div>
+                    <label for="event-file" style="text-align: center; margin-top: 1rem; display: block;">Change</label>
                 </div>
                 <div style="flex: 1;">
+                    <input type="file" id="event-file" hidden>
                     <div class="input" style="margin-bottom: 1.1rem;">
                         <input type="text" id="event-name" placeholder="Event name">
+                    </div>
+
+                    <div class="input" style="margin-bottom: 1.1rem;">
+                        <input type="text" id="event-location" placeholder="Event location">
                     </div>
 
                     <div class="flex flex--j-space-between">
@@ -118,6 +126,10 @@
         e.preventDefault();
         
         Event.addDetails()
+    })
+
+    $('#event-file').on('change', async e => {
+        await Event.addCover()
     })
 
     $('#delete-item-1').on('click', e => removeArtistItem(1))

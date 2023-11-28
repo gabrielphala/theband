@@ -6,6 +6,8 @@ import { formatArtistSelect, formatEventsForOrganizer, formatEventsForHome } fro
 import { closeModal } from "../helpers/modal";
 import { getQuery } from "../helpers/urlquery.js";
 
+import axios from "axios"
+
 export default () => {
     window.Event = class Event {
         static async addDetails () {
@@ -22,6 +24,7 @@ export default () => {
             const res = await fetch('/event/add-details', {
                 body: {
                     name: $('#event-name').val(),
+                    location: $('#event-location').val(),
                     start_date: $('#start-date').val(),
                     end_date: $('#end-date').val(),
                     invites
@@ -35,6 +38,31 @@ export default () => {
             }
 
             showError('event-error', res.error)
+        }
+
+        static async addCover () {
+            const data = new FormData();
+
+            const cover = $('#event-file')[0];
+            const file = cover.files ? cover.files[0] : '';
+
+            data.append('cover', file);
+
+            const res = await axios.post('/event/add-cover', data, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                },
+                onUploadProgress: (p) => {
+                    const progress = Math.floor((p.progress || 0) * 100);
+
+                    $('#cover-progress').text(`${progress}% complete`);
+                }
+            })
+
+            if (res.data.successful) {
+                $('#cover-preview')[0].style.backgroundImage =
+                    `url("/assets/uploads/covers/${res.data.cover}")`;
+            }
         }
 
         static async getAllByOrganizer () {

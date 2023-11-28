@@ -190,6 +190,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _helpers_format_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../helpers/format.js */ "./public/assets/js/src/helpers/format.js");
 /* harmony import */ var _helpers_modal__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../helpers/modal */ "./public/assets/js/src/helpers/modal.js");
 /* harmony import */ var _helpers_urlquery_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../helpers/urlquery.js */ "./public/assets/js/src/helpers/urlquery.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
+
 
 
 
@@ -210,6 +212,7 @@ __webpack_require__.r(__webpack_exports__);
       const res = await (0,_helpers_fetch_js__WEBPACK_IMPORTED_MODULE_1__["default"])('/event/add-details', {
         body: {
           name: $('#event-name').val(),
+          location: $('#event-location').val(),
           start_date: $('#start-date').val(),
           end_date: $('#end-date').val(),
           invites
@@ -220,6 +223,24 @@ __webpack_require__.r(__webpack_exports__);
         return (0,_helpers_modal__WEBPACK_IMPORTED_MODULE_4__.closeModal)('new-event');
       }
       (0,_helpers_error_js__WEBPACK_IMPORTED_MODULE_2__.showError)('event-error', res.error);
+    }
+    static async addCover() {
+      const data = new FormData();
+      const cover = $('#event-file')[0];
+      const file = cover.files ? cover.files[0] : '';
+      data.append('cover', file);
+      const res = await axios__WEBPACK_IMPORTED_MODULE_6__["default"].post('/event/add-cover', data, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        },
+        onUploadProgress: p => {
+          const progress = Math.floor((p.progress || 0) * 100);
+          $('#cover-progress').text(`${progress}% complete`);
+        }
+      });
+      if (res.data.successful) {
+        $('#cover-preview')[0].style.backgroundImage = `url("/assets/uploads/covers/${res.data.cover}")`;
+      }
     }
     static async getAllByOrganizer() {
       const response = await (0,_helpers_fetch_js__WEBPACK_IMPORTED_MODULE_1__["default"])('/events/get-ready-by-organizer');
@@ -878,10 +899,11 @@ const formatEventsForOrganizer = events => {
   events.forEach(_event => {
     formated += `
             <div class="events-container__list__item flex" style="margin-bottom: 1rem;">
-                <div class="events-container__list__item__back image--back" style="background-image: url('/assets/uploads/events/blank-photo.jpg');"></div>
+                <div class="events-container__list__item__back image--back" style="background-image: url('/assets/uploads/covers/${_event.cover}');"></div>
                 <div class="events-container__list__item__details flex flex--j-space-between" style="flex-direction: column;">
                     <div>
                         <h4>${_event.name}</h4>
+                        <p>${_event.location}</p>
                         <p>${(0,_datetime_js__WEBPACK_IMPORTED_MODULE_0__.getStaticDate)(_event.start_date)}</p>
                     </div>
                     <div>
@@ -898,10 +920,11 @@ const formatEventsForHome = events => {
   events.forEach(_event => {
     formated += `
             <div class="events-container__list__item flex" style="margin-bottom: 1rem;">
-                <div class="events-container__list__item__back image--back" style="background-image: url('/assets/uploads/events/blank-photo.jpg');"></div>
+                <div class="events-container__list__item__back image--back" style="background-image: url('/assets/uploads/covers/${_event.cover}');"></div>
                 <div class="events-container__list__item__details flex flex--j-space-between" style="flex-direction: column;">
                     <a href="/event/view?e=${_event.id}">
                         <h4>${_event.name}</h4>
+                        <p>${_event.location}</p>
                         <p>${(0,_datetime_js__WEBPACK_IMPORTED_MODULE_0__.getStaticDate)(_event.start_date)}</p>
                     </a>
                 </div>

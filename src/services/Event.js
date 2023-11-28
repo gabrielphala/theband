@@ -77,13 +77,15 @@ module.exports = class EventService {
     static async addDetails (res_wrap, body, { organizerInfo }) {
         try {
             v.validate({
-                'Name': { value: body.name, min: 2, max: 30 }
+                'Name': { value: body.name, min: 2, max: 30 },
+                'Location': { value: body.name, min: 5, max: 50 },
             });
 
             const eventInfo = await EventService.getIncompleteByOrganizer(organizerInfo.id)
 
             eventInfo.is_ready = true;
             eventInfo.name = body.name;
+            eventInfo.location = body.location;
             eventInfo.start_date = body.start_date;
             eventInfo.end_date = body.end_date;
 
@@ -130,7 +132,7 @@ module.exports = class EventService {
                     })
 
                     if (invite)
-                        throw `The artist: ${invite.stage_name} is already invited to: ${invite.name} at this time`;
+                        throw `The artist: ${invite.stage_name} is already invited to another event at this time`;
 
                     Invitation.insert({
                         organizer_id: organizerInfo.id,
@@ -157,9 +159,12 @@ module.exports = class EventService {
         try {
             const organizerId = req.store.organizerInfo.id;
 
-            const eventInfo = await eventService.getIncompleteByOrganizer(organizerId)
+            const eventInfo = await EventService.getIncompleteByOrganizer(organizerId)
+
+            if (!req.files[0]) return res_wrap;
 
             eventInfo.cover = req.files[0].filename;
+            res_wrap.cover = req.files[0].filename;
 
             eventInfo.save();
 
