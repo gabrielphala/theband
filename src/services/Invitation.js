@@ -23,6 +23,19 @@ module.exports = class InvitationService {
         return res_wrap;
     }
 
+    static async search (res_wrap, body) {
+        try {
+            const {query} = body;
+
+            res_wrap.invitations = await Invitation.search(query)
+
+            res_wrap.successful = true;
+
+        } catch (e) { throw e; }
+
+        return res_wrap;
+    }
+
     static async accept (res_wrap, body, { artistInfo }) {
         try {
             if (!(await Invitation.exists({ id: body.invite_id, artist_id: artistInfo.id, status: 'pending' })).found)

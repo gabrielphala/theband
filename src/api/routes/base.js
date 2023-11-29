@@ -6,6 +6,7 @@ const DownloadService = require("../../services/Download");
 module.exports = (router) => {
     router.get('/', base_controller.render('base/home', 'Where music lives'));
     router.get('/events', isLoggedIn, base_controller.render('base/events', 'Check up on events'));
+    router.get('/search', isLoggedIn, base_controller.render('base/search', 'Search'));
     router.get('/event/view', isLoggedIn, base_controller.render('base/event-view', 'View event details'));
     router.get('/listen', base_controller.render('base/listen', 'Now listening to...'));
 

@@ -1,0 +1,52 @@
+<%- include('../partials/header/base') %>
+
+<div class="home-container">
+	<div class="home-container__title">
+		<h1>Search</h1>
+		<p class="flex flex--a-center">
+			<svg class="image--icon">
+				<use href="#clock"></use>
+			</svg>
+			<span>Find your favorite artist's songs and schedule</span>
+		</p>
+	</div>
+	<div style="width: 50rem; margin: 0 auto;">
+		<div class="input">
+			<input type="text" id="query" placeholder="Search">
+		</div>
+		<div class="flex flex--j-center margin--top-2" style="margin-top: 2rem;">
+			<p style="margin-right: 2rem;" id="songs-btn" onclick="searchSongs()">Songs</p>
+			<p id="invites-btn" onclick="searchInvites()">invites</p>
+		</div>
+	</div>
+	<div class="home-container__recent-songs" id="song-list" style="margin-top: 2rem;"></div>
+	<div class="home-container__recent-songs" id="invite-list" style="margin-top: 2rem;"></div>
+</div>
+
+<script src="/assets/js/dist/jquery.js"></script>
+<script src="/assets/js/dist/app.bundle.js"></script>
+
+<script>
+	const searchSongs = () => {
+		$('#song-list').show();
+		$('#invite-list').hide();
+
+		$('#songs-btn')[0].style.color = 'darkred';
+		$('#invites-btn')[0].style.color = 'unset';
+
+		$('#query').on('change', e => Song.search())
+	}
+
+	const searchInvites = () => {
+		$('#song-list').hide();
+		$('#invite-list').show();
+
+		$('#songs-btn')[0].style.color = 'unset';
+		$('#invites-btn')[0].style.color = 'darkred';
+
+		$('#query').on('change', e => Invitation.search());
+	}
+
+	searchSongs();
+	
+</script>

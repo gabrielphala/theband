@@ -81,7 +81,7 @@ export const formatInvitationsForArtists = (events) => {
             
         formated += `
             <div class="events-container__list__item flex" style="margin-bottom: 1rem;">
-                <div class="events-container__list__item__back image--back" style="background-image: url('/assets/uploads/events/blank-photo.jpg');"></div>
+                <div class="events-container__list__item__back image--back" style="background-image: url('/assets/uploads/covers/${_event.cover}');"></div>
                 <div class="events-container__list__item__details flex flex--j-space-between" style="flex-direction: column;">
                     <div>
                         <h4>${_event.name}</h4>

@@ -198,6 +198,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+let tableHeader = ['#', 'Event name', 'Event start', 'Event end', 'Location'];
+let allowedColumns = ['name', 'start_date', 'end_date', 'location'];
+let orgEvents = [];
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (() => {
   window.Event = class Event {
     static async addDetails() {
@@ -247,6 +250,7 @@ __webpack_require__.r(__webpack_exports__);
       $('#artist-1').html((0,_helpers_format_js__WEBPACK_IMPORTED_MODULE_3__.formatArtistSelect)((await (0,_helpers_fetch_js__WEBPACK_IMPORTED_MODULE_1__["default"])('/artists/get-all')).artists));
       if ((0,_helpers_array_js__WEBPACK_IMPORTED_MODULE_0__.arrayNotEmpty)(response.events)) {
         $('#no-events')[0].style.display = 'none';
+        orgEvents = response.events;
         $('#event-list').html((0,_helpers_format_js__WEBPACK_IMPORTED_MODULE_3__.formatEventsForOrganizer)(response.events));
         return;
       }
@@ -256,6 +260,7 @@ __webpack_require__.r(__webpack_exports__);
     static async getAll() {
       const response = await (0,_helpers_fetch_js__WEBPACK_IMPORTED_MODULE_1__["default"])('/events/get-all-ready');
       if ((0,_helpers_array_js__WEBPACK_IMPORTED_MODULE_0__.arrayNotEmpty)(response.events)) {
+        orgEvents = response.events;
         $('#event-list').html((0,_helpers_format_js__WEBPACK_IMPORTED_MODULE_3__.formatEventsForHome)(response.events));
         return;
       }
@@ -269,6 +274,7 @@ __webpack_require__.r(__webpack_exports__);
       });
       if ((0,_helpers_array_js__WEBPACK_IMPORTED_MODULE_0__.arrayNotEmpty)(response.events)) {
         $('#event-list').html((0,_helpers_format_js__WEBPACK_IMPORTED_MODULE_3__.formatEventsForHome)(response.events));
+        orgEvents = response.events;
         return;
       }
       $('#event-list').html(' ');
@@ -280,6 +286,36 @@ __webpack_require__.r(__webpack_exports__);
         }
       });
       Invitation.viewInvitationOrg((0,_helpers_urlquery_js__WEBPACK_IMPORTED_MODULE_5__.getQuery)('e'));
+    }
+    static async downloadCSV() {
+      const response = await (0,_helpers_fetch_js__WEBPACK_IMPORTED_MODULE_1__["default"])('/download/csv', {
+        body: {
+          data: orgEvents,
+          tableHeader,
+          allowedColumns,
+          reportName: 'Events'
+        }
+      });
+      if (response.successful) {
+        const anchor = $('#download-anchor');
+        anchor.attr('href', `/assets/downloads/tmp/${response.filename}`);
+        anchor[0].click();
+      }
+    }
+    static async downloadWord() {
+      const response = await (0,_helpers_fetch_js__WEBPACK_IMPORTED_MODULE_1__["default"])('/download/word', {
+        body: {
+          data: orgEvents,
+          tableHeader,
+          allowedColumns,
+          reportName: 'Events'
+        }
+      });
+      if (response.successful) {
+        const anchor = $('#download-anchor');
+        anchor.attr('href', `/assets/downloads/tmp/${response.filename}`);
+        anchor[0].click();
+      }
     }
   };
 });
@@ -350,6 +386,30 @@ let artistInvitations = [];
       });
       if ((0,_helpers_array_js__WEBPACK_IMPORTED_MODULE_0__.arrayNotEmpty)(response.invitations)) {
         $('#invitation-list').html((0,_helpers_format_js__WEBPACK_IMPORTED_MODULE_2__.formatForHome)(response.invitations));
+        return;
+      }
+    }
+    static async search() {
+      const response = await (0,_helpers_fetch_js__WEBPACK_IMPORTED_MODULE_1__["default"])('/invitation/search', {
+        body: {
+          query: $('#query').val()
+        }
+      });
+      if ((0,_helpers_array_js__WEBPACK_IMPORTED_MODULE_0__.arrayNotEmpty)(response.invitations)) {
+        let formated = '';
+        response.invitations.forEach(invite => {
+          formated += `
+                        <div class="invite">
+                            <div class="invite__back image--back" style="height: 10rem; background-image: url('/assets/uploads/covers/${invite.event_cover}')"></div>
+                            <div class="invite__details">
+                                <h2>${invite.event_name}</h2>
+                                <p>${invite.location}</p>
+                                <p>${invite.status}</p>
+                            </div>
+                        </div>
+                    `;
+        });
+        $('#invite-list').html(formated);
         return;
       }
     }
@@ -528,6 +588,19 @@ let allowedColumns = ['name', 'cover', '_album_name'];
         return;
       }
       (0,_helpers_error__WEBPACK_IMPORTED_MODULE_5__.showError)('new-song-error', res.error);
+    }
+    static async search() {
+      const res = await (0,_helpers_fetch__WEBPACK_IMPORTED_MODULE_0__["default"])('/song/search', {
+        body: {
+          query: $('#query').val()
+        }
+      });
+      if ((0,_helpers_array__WEBPACK_IMPORTED_MODULE_3__.arrayNotEmpty)(res.songs)) {
+        $('#no-songs').hide();
+        $('#song-list').html((0,_helpers_format__WEBPACK_IMPORTED_MODULE_2__.formatSongsForHome)(res.songs));
+        return;
+      }
+      $('#song-list').html(' ');
     }
     static async removeSong(song_id) {
       const res = await (0,_helpers_fetch__WEBPACK_IMPORTED_MODULE_0__["default"])('/song/delete', {
@@ -939,7 +1012,7 @@ const formatInvitationsForArtists = events => {
     let options = `<p data-inviteid="${_event.id}" style="cursor: pointer;"><span id="accept-invite" style="color: #3dbc3d; margin-right: 1rem;">Accept</span><span id="decline-invite" style="color: #ff8787;">Decline</span></p>`;
     formated += `
             <div class="events-container__list__item flex" style="margin-bottom: 1rem;">
-                <div class="events-container__list__item__back image--back" style="background-image: url('/assets/uploads/events/blank-photo.jpg');"></div>
+                <div class="events-container__list__item__back image--back" style="background-image: url('/assets/uploads/covers/${_event.cover}');"></div>
                 <div class="events-container__list__item__details flex flex--j-space-between" style="flex-direction: column;">
                     <div>
                         <h4>${_event.name}</h4>

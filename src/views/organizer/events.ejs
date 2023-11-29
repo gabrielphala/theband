@@ -14,7 +14,10 @@
             <p>Manage your events from here</p>
         </div>
         <div class="container__main__center">
-            <div class="card">
+            <p style="cursor: pointer;" id="download-csv">Export to CSV</p>
+            <p style="cursor: pointer; margin-bottom: 1rem;" id="download-word">Export to Word</p>
+            
+            <div class="card" style="margin-top: 2rem;">
                 <div class="card__header card__header--no-border">
                     <h1 style="font-size: 1.6rem;">Up coming</h1>
                     <p>Stay ahead of events</p>
@@ -116,6 +119,8 @@
     </form>
 </div>
 
+<a download id="download-anchor"></a>
+
 <script src="/assets/js/dist/jquery.js"></script>
 <script src="/assets/js/dist/app.bundle.js"></script>
 
@@ -133,4 +138,12 @@
     })
 
     $('#delete-item-1').on('click', e => removeArtistItem(1))
+
+    $('#download-csv').on('click', e => {
+        Event.downloadCSV();
+    })
+
+    $('#download-word').on('click', e => {
+        Event.downloadWord();
+    })
 </script>

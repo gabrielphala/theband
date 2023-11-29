@@ -8,6 +8,16 @@ import { getQuery } from "../helpers/urlquery.js";
 
 import axios from "axios"
 
+let tableHeader = [
+    '#', 'Event name', 'Event start', 'Event end', 'Location'
+]
+
+let allowedColumns = [
+    'name', 'start_date', 'end_date', 'location'
+]
+
+let orgEvents = [];
+
 export default () => {
     window.Event = class Event {
         static async addDetails () {
@@ -72,6 +82,8 @@ export default () => {
             if (arrayNotEmpty(response.events)) {
                 $('#no-events')[0].style.display = 'none';
 
+                orgEvents = response.events;
+
                 $('#event-list').html(formatEventsForOrganizer(response.events));
                 return 
             }
@@ -84,6 +96,8 @@ export default () => {
             const response = await fetch('/events/get-all-ready')
 
             if (arrayNotEmpty(response.events)) {
+                orgEvents = response.events;
+
                 $('#event-list').html(formatEventsForHome(response.events));
                 return 
             }
@@ -100,6 +114,7 @@ export default () => {
 
             if (arrayNotEmpty(response.events)) {
                 $('#event-list').html(formatEventsForHome(response.events));
+                orgEvents = response.events;
                 return 
             }
 
@@ -114,6 +129,44 @@ export default () => {
             })
 
             Invitation.viewInvitationOrg(getQuery('e'))
+        }
+
+        static async downloadCSV () {
+            const response = await fetch('/download/csv', {
+                body: {
+                    data: orgEvents,
+                    tableHeader,
+                    allowedColumns,
+                    reportName: 'Events'
+                }
+            });
+
+            if (response.successful) {
+                const anchor = $('#download-anchor')
+
+                anchor.attr('href', `/assets/downloads/tmp/${response.filename}`)
+
+                anchor[0].click();
+            }
+        }
+
+        static async downloadWord () {
+            const response = await fetch('/download/word', {
+                body: {
+                    data: orgEvents,
+                    tableHeader,
+                    allowedColumns,
+                    reportName: 'Events'
+                }
+            });
+
+            if (response.successful) {
+                const anchor = $('#download-anchor')
+
+                anchor.attr('href', `/assets/downloads/tmp/${response.filename}`)
+
+                anchor[0].click();
+            }
         }
     }
 }

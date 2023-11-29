@@ -6,6 +6,7 @@ const { anyFiles } = require('../../config/multer');
 module.exports = (router) => {
     router.post('/song/add-name', base_controller.wrap_with_store(SongService.addSongName));
     router.post('/song/delete', base_controller.wrap(SongService.deleteSongById));
+    router.post('/song/search', base_controller.wrap(SongService.search));
 
     router.post(
         '/song/add-cover',

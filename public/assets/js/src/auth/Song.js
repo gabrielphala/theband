@@ -84,6 +84,23 @@ export default () => {
             showError('new-song-error', res.error)
         }
 
+        static async search () {
+            const res = await fetch('/song/search', {
+                body: {
+                    query: $('#query').val()
+                }
+            })
+
+            if (arrayNotEmpty(res.songs)) {
+                $('#no-songs').hide()
+                $('#song-list').html(formatSongsForHome(res.songs))
+
+                return;
+            }
+
+            $('#song-list').html(' ')
+        }
+
         static async removeSong (song_id) {
             const res = await fetch('/song/delete', {
                 body: {

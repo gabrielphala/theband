@@ -161,4 +161,17 @@ module.exports = class SongService {
 
         return res_wrap;
     }
+
+    static async search (res_wrap, body) {
+        try {
+            const { query } = body;
+
+            res_wrap.songs = await Song.search(query);
+
+            res_wrap.successful = true;
+
+        } catch (e) { throw e; }
+
+        return res_wrap;
+    }
 }

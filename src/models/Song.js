@@ -42,6 +42,20 @@ module.exports = new (class Song extends SQLifier {
         })
     }
 
+    search (query) {
+        return this.raw(`
+            SELECT song.id as id, song.genre as genre, song.album_id as album_id,
+                song.name as name, al.name as _album_name, art.stage_name as stage_name,
+                song.cover as cover, al.cover as _album_cover
+            FROM song
+            INNER JOIN artist art 
+            ON song.artist_id = art.id
+            INNER JOIN album al 
+            ON song.album_id = al.id
+            WHERE art.stage_name LIKE '%${query}%'
+        `);
+    }
+
     getAllReadySongs () {
         return this.find({
             condition: {

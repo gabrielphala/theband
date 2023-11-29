@@ -40,6 +40,19 @@ module.exports = new (class Invitation extends SQLifier {
         })
     }
 
+    search (query) {
+        return this.raw(`
+            SELECT invitation.id as id, eve.name as event_name, eve.location as location, eve.cover as event_cover,
+                invitation.status as status, invitation.start_date as start_date, invitation.end_date as end_date
+            FROM invitation
+            INNER JOIN artist art 
+            ON invitation.artist_id = art.id
+            INNER JOIN event eve 
+            ON invitation.event_id = eve.id
+            WHERE art.stage_name LIKE '%${query}%'
+        `);
+    }
+
     accept (id) {
         return this.update({ id }, { status: 'Accepted' })
     }

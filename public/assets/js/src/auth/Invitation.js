@@ -78,6 +78,35 @@ export default () => {
             }
         }
 
+        static async search () {
+            const response = await fetch('/invitation/search', {
+                body: {
+                    query: $('#query').val()
+                }
+            })
+
+            if (arrayNotEmpty(response.invitations)) {
+                let formated = '';
+
+                response.invitations.forEach(invite => {
+                    formated += `
+                        <div class="invite">
+                            <div class="invite__back image--back" style="height: 10rem; background-image: url('/assets/uploads/covers/${invite.event_cover}')"></div>
+                            <div class="invite__details">
+                                <h2>${invite.event_name}</h2>
+                                <p>${invite.location}</p>
+                                <p>${invite.status}</p>
+                            </div>
+                        </div>
+                    `
+                });
+
+                $('#invite-list').html(formated);
+
+                return
+            }
+        }
+
         static async accept (invite_id) {
             const response = await fetch('/invitation/accept', {
                 body: {

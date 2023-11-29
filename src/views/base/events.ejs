@@ -6,7 +6,9 @@
         <p>Catch up with events</p>
         <div class="events-container__hr"></div>
     </div>
-    <div class="card">
+    <p style="cursor: pointer;" id="download-csv">Export to CSV</p>
+    <p style="cursor: pointer; margin-bottom: 1rem;" id="download-word">Export to Word</p>
+    <div class="card" style="margin-top: 2rem;">
         <div class="card__header card__header--no-border">
             <h1 style="font-size: 1.6rem;">Up coming</h1>
             <p>Stay ahead of events</p>
@@ -16,11 +18,14 @@
                 <input type="text" id="event-search"  placeholder="Search by artist name">
             </div>
         </div>
+        
         <div class="events-container__list" id="event-list">
             
         </div>
     </div>
 </div>
+
+<a download id="download-anchor"></a>
 
 <script src="/assets/js/dist/jquery.js"></script>
 <script src="/assets/js/dist/app.bundle.js"></script>
@@ -30,5 +35,13 @@
 
     $('#event-search').on('keyup', () => {
         Event.searchByArtist();
+    })
+
+    $('#download-csv').on('click', e => {
+        Event.downloadCSV();
+    })
+
+    $('#download-word').on('click', e => {
+        Event.downloadWord();
     })
 </script>
