@@ -38,7 +38,7 @@ module.exports = class InvitationService {
 
     static async accept (res_wrap, body, { artistInfo }) {
         try {
-            if (!(await Invitation.exists({ id: body.invite_id, artist_id: artistInfo.id, status: 'pending' })).found)
+            if (!(await Invitation.exists({ id: body.invite_id, artist_id: artistInfo.id })).found)
                 throw 'Invitation not found or response has been captured';
 
             res_wrap.invitations = await Invitation.accept(body.invite_id);
@@ -52,7 +52,7 @@ module.exports = class InvitationService {
 
     static async decline (res_wrap, body, { artistInfo }) {
         try {
-            if (!(await Invitation.exists({ id: body.invite_id, artist_id: artistInfo.id, status: 'pending' })).found)
+            if (!(await Invitation.exists({ id: body.invite_id, artist_id: artistInfo.id })).found)
                 throw 'Invitation not found or response has been captured';
 
             res_wrap.invitations = await Invitation.decline(body.invite_id);

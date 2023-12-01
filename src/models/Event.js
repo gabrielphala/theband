@@ -8,7 +8,7 @@ module.exports = new (class Event extends SQLifier {
             id: { type: 'int', isAutoIncrement: true, isPrimary: true },
             organizer_id: { type: 'int', ref: 'organizer' },
             name: { type: 'varchar', length: 250 },
-            cover: { type: 'varchar', length: 250 },
+            cover: { type: 'varchar', length: 250, default: 'default.png' },
             location: { type: 'varchar', length: 250 },
             start_date: { type: 'datetime' },
             end_date: { type: 'datetime' },

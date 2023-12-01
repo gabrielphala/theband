@@ -26,13 +26,13 @@ export default () => {
 
                 $('#event-list').html(formatInvitationsForArtists(response.invitations));
 
-                $('#accept-invite').on('click', e => {
+                $('.accept-invite').on('click', e => {
                     const set = e.currentTarget.parentElement.dataset;
 
                     Invitation.accept(set.inviteid)
                 })
 
-                $('#decline-invite').on('click', e => {
+                $('.decline-invite').on('click', e => {
                     const set = e.currentTarget.parentElement.dataset;
 
                     Invitation.decline(set.inviteid)

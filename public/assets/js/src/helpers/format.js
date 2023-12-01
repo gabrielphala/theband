@@ -77,7 +77,7 @@ export const formatInvitationsForArtists = (events) => {
 
     events.forEach(_event => {
         let options = 
-            `<p data-inviteid="${_event.id}" style="cursor: pointer;"><span id="accept-invite" style="color: #3dbc3d; margin-right: 1rem;">Accept</span><span id="decline-invite" style="color: #ff8787;">Decline</span></p>`;
+            `<p data-inviteid="${_event.id}" style="cursor: pointer;"><span class="accept-invite" style="color: #3dbc3d; margin-right: 1rem;">Accept</span><span class="decline-invite" style="color: #ff8787;">Decline</span></p>`;
             
         formated += `
             <div class="events-container__list__item flex" style="margin-bottom: 1rem;">
@@ -88,7 +88,8 @@ export const formatInvitationsForArtists = (events) => {
                         <p>${getStaticDate(_event.start_date)}</p>
                     </div>
                     <div>
-                        ${ _event.status == 'pending' ? options : _event.status }
+                        <p>${_event.status}</p>
+                        ${ options }
                     </div>
                 </div>
             </div>

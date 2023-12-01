@@ -4,6 +4,7 @@ const Artist = require("../models/Artist")
 
 const v = require("../helpers/Validation");
 const { SQLDate } = require("sqlifier");
+const { timeDiff } = require("../helpers/Date");
 
 module.exports = class EventService {
     static async getIncompleteByOrganizer (organizerId) {
@@ -82,6 +83,36 @@ module.exports = class EventService {
             });
 
             const eventInfo = await EventService.getIncompleteByOrganizer(organizerInfo.id)
+
+            if (timeDiff(new Date(body.start_date), new Date(body.end_date)) <= 2)
+                throw 'Minimum time duration for event is 2 hours';
+
+            if (timeDiff(new Date(body.start_date), new Date(body.end_date)) > 24)
+                throw 'Max time duration for event is 24 hours';
+
+            const lastEvent = await Event.findLatestOne({
+                condition: {
+                    is_ready: true,
+                    organizer_id: organizerInfo.id
+                }
+            })
+
+            if (lastEvent) {
+                const diff = timeDiff(new Date(lastEvent.end_date), new Date(body.start_date));
+
+                if (diff <= 2) {
+                    throw 'Minimun time between last event and current event is 2 hours';
+                }
+            }
+
+            const eventTime = new Date();
+            eventTime.setHours(-730);
+
+            if ((await Event.exists({ name: body.name, end_date: { $gt: SQLDate.toSQLDatetime(eventTime) } })).found)
+                throw 'There is an event with the same name already';
+
+            if ((await Event.exists({ location: body.location, end_date: { $gt: SQLDate.toSQLDatetime(eventTime) } })).found)
+                throw 'There is an event with the same location already';
 
             eventInfo.is_ready = true;
             eventInfo.name = body.name;
