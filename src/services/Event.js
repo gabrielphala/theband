@@ -106,12 +106,12 @@ module.exports = class EventService {
             }
 
             const eventTime = new Date();
-            eventTime.setHours(-730);
+            eventTime.setHours(-2);
 
-            if ((await Event.exists({ name: body.name, end_date: { $gt: SQLDate.toSQLDatetime(eventTime) } })).found)
+            if ((await Event.exists({ organizer_id: organizerInfo.id, name: body.name, end_date: { $gt: SQLDate.toSQLDatetime(eventTime) } })).found)
                 throw 'There is an event with the same name already';
 
-            if ((await Event.exists({ location: body.location, end_date: { $gt: SQLDate.toSQLDatetime(eventTime) } })).found)
+            if ((await Event.exists({ organizer_id: organizerInfo.id, location: body.location, end_date: { $gt: SQLDate.toSQLDatetime(eventTime) } })).found)
                 throw 'There is an event with the same location already';
 
             eventInfo.is_ready = true;
